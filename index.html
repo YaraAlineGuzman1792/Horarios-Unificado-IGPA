@@ -135,6 +135,7 @@
         .mercadotecnia { background-color: #16a085; color: white; }
         .psicologia { background-color: #d35400; color: white; }
         .arte { background-color: #e91e63; color: white; }
+        .taller { background-color: #8e44ad; color: white; }
         
         .nota {
             font-size: 10px;
@@ -194,7 +195,6 @@
         <h1>📅 HORARIOS DOMINGO 2026 - GRADOS UNIFICADOS</h1>
         <p class="subtitle">Instituto Universitario Pérez Cooperaria</p>
         
-        <!-- Tabs de navegación -->
         <div class="tabs">
             <button class="tab-btn active" onclick="mostrarTab(event, 'basico')">Básico</button>
             <button class="tab-btn" onclick="mostrarTab(event, 'bach-comp')">Bach. Computación</button>
@@ -204,7 +204,6 @@
             <button class="tab-btn" onclick="mostrarTab(event, 'secretariado')">Secretariado Bilingüe</button>
         </div>
         
-        <!-- BÁSICO -->
         <div id="basico" class="tab-content active">
             <h2 style="color: #e74c3c; margin-bottom: 15px;">📚 Horario: BÁSICO</h2>
             <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados mostrados en paréntesis</p>
@@ -219,7 +218,7 @@
                 <tbody>
                     <tr>
                         <td class="hora">8:00–8:30</td>
-                        <td class="matematicas">Matemáticas (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                        <td class="matematicas">Matemáticas (Básico, Bach. Comp., Perito, P. Adm) <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
@@ -231,7 +230,7 @@
                     </tr>
                     <tr>
                         <td class="hora">9:30–10:00</td>
-                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
+                        <td class="tics">TIC's (Básico) <span class="nota">Yara Guzmán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">10:00–10:30</td>
@@ -239,19 +238,19 @@
                     </tr>
                     <tr>
                         <td class="hora">10:30–11:00</td>
-                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán</span></td>
+                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán - Grupo A</span></td>
                     </tr>
                     <tr>
                         <td class="hora">11:00–11:30</td>
-                        <td class="arte">Expresión Artística (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">11:30–12:00</td>
-                        <td class="administracion">Emprendimientos para Productividad <span class="nota">Adela Jiménez</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:00–12:30</td>
-                        <td class="sociales">Cultura e Idioma Garífuna <span class="nota">Claudia Catalán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:30–13:30</td>
@@ -259,17 +258,24 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="tics">TIC's (Básico, Bach. Madurez) <span class="nota">Yara Guzmán</span></td>
+                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–14:30</td>
-                        <td class="lenguaje">Refuerzo de Lenguaje <span class="nota">Adela Jiménez</span></td>
+                        <td class="arte">Expresión Artística (Básico) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="administracion">Emprendimientos para Productividad <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="sociales">Cultura e Idioma Garífuna <span class="nota">Claudia Catalán</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- BACHILLERATO EN COMPUTACIÓN -->
         <div id="bach-comp" class="tab-content">
             <h2 style="color: #8e44ad; margin-bottom: 15px;">💻 Horario: BACHILLERATO EN COMPUTACIÓN</h2>
             <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados mostrados en paréntesis</p>
@@ -284,7 +290,7 @@
                 <tbody>
                     <tr>
                         <td class="hora">8:00–8:30</td>
-                        <td class="matematicas">Matemáticas I (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                        <td class="matematicas">Matemáticas I (Básico, Bach. Comp., Perito) <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
@@ -308,15 +314,15 @@
                     </tr>
                     <tr>
                         <td class="hora">11:00–11:30</td>
-                        <td class="computacion">Computación I (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                        <td class="computacion">Computación I (Bach. Comp.) <span class="nota">Yara Guzmán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">11:30–12:00</td>
-                        <td class="computacion">Programación I (Bach. Comp., 4to Perito) <span class="nota">Yara Guzmán</span></td>
+                        <td class="computacion">Programación I (Bach. Comp.) <span class="nota">Yara Guzmán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">12:00–12:30</td>
-                        <td class="sociales">Ciencias Sociales <span class="nota">Claudia Catalán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:30–13:30</td>
@@ -324,20 +330,27 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="tics">Técnico en Reparación de Computadoras <span class="nota">Yara Guzmán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–14:30</td>
+                        <td class="tics">Técnico en Reparación de Computadoras <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="sociales">Ciencias Sociales <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
                         <td class="tics">Técnico en Mantenimiento de Computadoras <span class="nota">Yara Guzmán</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- BACHILLERATO POR MADUREZ -->
         <div id="bach-madurez" class="tab-content">
             <h2 style="color: #16a085; margin-bottom: 15px;">📖 Horario: BACHILLERATO POR MADUREZ</h2>
-            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Seminario 14:00–15:30 (1.5 horas) sin docente asignado</p>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Seminario 14:00–15:30 (1.5 horas)</p>
             
             <table>
                 <thead>
@@ -349,7 +362,7 @@
                 <tbody>
                     <tr>
                         <td class="hora">8:00–8:30</td>
-                        <td class="matematicas">Matemáticas (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                        <td class="taller"><i>Receso / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
@@ -361,7 +374,7 @@
                     </tr>
                     <tr>
                         <td class="hora">9:30–10:00</td>
-                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
+                        <td class="psicologia">Psicología <span class="nota">Adela Jiménez</span></td>
                     </tr>
                     <tr>
                         <td class="hora">10:00–10:30</td>
@@ -369,11 +382,11 @@
                     </tr>
                     <tr>
                         <td class="hora">10:30–11:00</td>
-                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán</span></td>
+                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán - Grupo A</span></td>
                     </tr>
                     <tr>
                         <td class="hora">11:00–11:30</td>
-                        <td class="psicologia">Psicología <span class="nota">Adela Jiménez</span></td>
+                        <td class="taller"><i>Receso / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">11:30–12:00</td>
@@ -389,20 +402,19 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="arte">Expresión Artística (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–15:30</td>
-                        <td class="administracion">Seminario <span class="nota">Sin docente asignado</span></td>
+                        <td class="taller">Seminario (1.5 Horas) <span class="nota">Sin docente asignado</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- 4TO PERITO CONTADOR -->
         <div id="4to-perito" class="tab-content">
             <h2 style="color: #d35400; margin-bottom: 15px;">💼 Horario: 4TO PERITO CONTADOR</h2>
-            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados (sin colisiones)</p>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Horario ajustado para evitar colisiones</p>
             
             <table>
                 <thead>
@@ -414,7 +426,7 @@
                 <tbody>
                     <tr>
                         <td class="hora">8:00–8:30</td>
-                        <td class="matematicas">Matemáticas <span class="nota">Karen Supe</span></td>
+                        <td class="matematicas">Matemáticas (Perito, Básico, Bach. Comp) <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
@@ -446,7 +458,7 @@
                     </tr>
                     <tr>
                         <td class="hora">12:00–12:30</td>
-                        <td class="administracion">Administración y Organización de Oficina <span class="nota">Claudia Catalán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:30–13:30</td>
@@ -454,17 +466,24 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="computacion">Computación (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                        <td class="administracion">Administración y Organización de Oficina <span class="nota">Claudia Catalán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–14:30</td>
-                        <td class="computacion">Programación I (Bach. Comp., 4to Perito) <span class="nota">Yara Guzmán</span></td>
+                        <td class="computacion">Computación (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="computacion">Programación I <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- PERITO EN ADMINISTRACIÓN -->
         <div id="perito-adm" class="tab-content">
             <h2 style="color: #27ae60; margin-bottom: 15px;">🏢 Horario: PERITO EN ADMINISTRACIÓN</h2>
             <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados (sin colisiones)</p>
@@ -483,7 +502,7 @@
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
-                        <td class="contabilidad">Contabilidad General <span class="nota">Karen Supe</span></td>
+                        <td class="contabilidad">Contabilidad General (Perito Adm.) <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">9:00–9:30</td>
@@ -507,11 +526,11 @@
                     </tr>
                     <tr>
                         <td class="hora">11:30–12:00</td>
-                        <td class="investigacion">Técnicas de Investigación <span class="nota">Adela Jiménez</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:00–12:30</td>
-                        <td class="mercadotecnia">Mercadotecnia I <span class="nota">Yara Guzmán</span></td>
+                        <td class="investigacion">Técnicas de Investigación <span class="nota">Adela Jiménez</span></td>
                     </tr>
                     <tr>
                         <td class="hora">12:30–13:30</td>
@@ -519,17 +538,24 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="contabilidad">Contabilidad II (especialización) <span class="nota">Karen Supe</span></td>
+                        <td class="tics">Contabilidad II (especialización) <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–14:30</td>
+                        <td class="mercadotecnia">Mercadotecnia I <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
                         <td class="administracion">Refuerzo de Administración <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- SECRETARIADO BILINGÜE -->
         <div id="secretariado" class="tab-content">
             <h2 style="color: #e91e63; margin-bottom: 15px;">🌐 Horario: SECRETARIADO BILINGÜE</h2>
             <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados</p>
@@ -544,7 +570,7 @@
                 <tbody>
                     <tr>
                         <td class="hora">8:00–8:30</td>
-                        <td class="matematicas">Matemática Comercial (4to Perito, Secretariado) <span class="nota">Karen Supe</span></td>
+                        <td class="matematicas">Matemática Comercial <span class="nota">Karen Supe</span></td>
                     </tr>
                     <tr>
                         <td class="hora">8:30–9:00</td>
@@ -552,11 +578,11 @@
                     </tr>
                     <tr>
                         <td class="hora">9:00–9:30</td>
-                        <td class="lenguaje">Redacción y Correspondencia (4to Perito, Secretariado) <span class="nota">Claudia Catalán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">9:30–10:00</td>
-                        <td class="lenguaje">Taquigrafía <span class="nota">Claudia Catalán</span></td>
+                        <td class="lenguaje">Redacción y Correspondencia (4to Perito, Secretariado) <span class="nota">Claudia Catalán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">10:00–10:30</td>
@@ -572,7 +598,7 @@
                     </tr>
                     <tr>
                         <td class="hora">11:30–12:00</td>
-                        <td class="ingles">Mecanografía <span class="nota">Yara Guzmán</span></td>
+                        <td class="taller"><i>Receso de Estudio / Libre</i></td>
                     </tr>
                     <tr>
                         <td class="hora">12:00–12:30</td>
@@ -584,11 +610,19 @@
                     </tr>
                     <tr>
                         <td class="hora">13:30–14:00</td>
-                        <td class="computacion">Computación I (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                        <td class="administracion">Taller de Redacción Ejecutiva <span class="nota">Claudia Catalán</span></td>
                     </tr>
                     <tr>
                         <td class="hora">14:00–14:30</td>
-                        <td class="administracion">Taller de Redacción Ejecutiva <span class="nota">Claudia Catalán</span></td>
+                        <td class="computacion">Computación I (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="lenguaje">Taquigrafía <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="ingles">Mecanografía <span class="nota">Yara Guzmán</span></td>
                     </tr>
                 </tbody>
             </table>
