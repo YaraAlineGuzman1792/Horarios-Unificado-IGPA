@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horarios Domingo - Grados Unificados 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover {
+            background-color: #bdc3c7;
+        }
+        
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            border: 2px solid #333;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        
+        th {
+            background-color: #2c3e50;
+            color: white;
+            height: 40px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .hora {
+            background-color: #ecf0f1;
+            width: 90px;
+            min-width: 90px;
+        }
+        
+        .receso {
+            background-color: #f39c12;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .almuerzo {
+            background-color: #16a085;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Colores por materia */
+        .matematicas { background-color: #e74c3c; color: white; }
+        .lenguaje { background-color: #3498db; color: white; }
+        .ciencias { background-color: #2ecc71; color: white; }
+        .sociales { background-color: #9b59b6; color: white; }
+        .ingles { background-color: #f39c12; color: white; }
+        .tics { background-color: #1abc9c; color: white; }
+        .computacion { background-color: #34495e; color: white; }
+        .contabilidad { background-color: #c0392b; color: white; }
+        .administracion { background-color: #8e44ad; color: white; }
+        .derecho { background-color: #7f8c8d; color: white; }
+        .investigacion { background-color: #e67e22; color: white; }
+        .mercadotecnia { background-color: #16a085; color: white; }
+        .psicologia { background-color: #d35400; color: white; }
+        .arte { background-color: #e91e63; color: white; }
+        .taller { background-color: #8e44ad; color: white; }
+        
+        .nota {
+            font-size: 10px;
+            color: #666;
+            display: block;
+            margin-top: 3px;
+            opacity: 0.8;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .button-container {
+                display: none;
+            }
+            .tabs {
+                display: none;
+            }
+            .tab-content {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 HORARIOS DOMINGO 2026 - GRADOS UNIFICADOS</h1>
+        <p class="subtitle">Instituto Universitario Pérez Cooperaria</p>
+        
+        <!-- Tabs de navegación -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mostrarTab(event, 'basico')">Básico</button>
+            <button class="tab-btn" onclick="mostrarTab(event, 'bach-comp')">Bach. Computación</button>
+            <button class="tab-btn" onclick="mostrarTab(event, 'bach-madurez')">Bach. Madurez</button>
+            <button class="tab-btn" onclick="mostrarTab(event, '4to-perito')">4to Perito Contador</button>
+            <button class="tab-btn" onclick="mostrarTab(event, 'perito-adm')">Perito Administración</button>
+            <button class="tab-btn" onclick="mostrarTab(event, 'secretariado')">Secretariado Bilingüe</button>
+        </div>
+        
+        <!-- BÁSICO -->
+        <div id="basico" class="tab-content active">
+            <h2 style="color: #e74c3c; margin-bottom: 15px;">📚 Horario: BÁSICO</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados mostrados en paréntesis</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="matematicas">Matemáticas (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="lenguaje">Comunicación y Lenguaje (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="ciencias">Ciencias Naturales (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán - Grupo A</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="tics">Expresión Artística (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="administracion">Emprendimientos para Productividad <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="sociales">Cultura e Idioma Garífuna <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="tics">TIC's (Básico, Bach. Madurez) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–14:30</td>
+                        <td class="arte">Refuerzo de Lenguaje <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="taller">Taller de Proyectos Integrados <span class="nota">Docentes Rotativo</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="sociales">Tutoría / Convivencia <span class="nota">Docente Guía</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- BACHILLERATO EN COMPUTACIÓN -->
+        <div id="bach-comp" class="tab-content">
+            <h2 style="color: #8e44ad; margin-bottom: 15px;">💻 Horario: BACHILLERATO EN COMPUTACIÓN</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados mostrados en paréntesis</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="matematicas">Matemáticas I (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="contabilidad">Contabilidad (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="matematicas">Estadística (Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="matematicas">Física I <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="ingles">Inglés Comercial I (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="computacion">Computación I (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="computacion">Programación I (Bach. Comp., 4to Perito) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="administracion">Análisis Empresarial <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="tics">Técnico en Reparación de Computadoras <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–14:30</td>
+                        <td class="tics">Técnico en Mantenimiento de Computadoras <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="taller">Taller / Proyectos Integrados <span class="nota">Docentes Rotativo</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="administracion">Tutoría / Asesorías <span class="nota">Docente Guía</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- BACHILLERATO POR MADUREZ -->
+        <div id="bach-madurez" class="tab-content">
+            <h2 style="color: #16a085; margin-bottom: 15px;">📖 Horario: BACHILLERATO POR MADUREZ</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Seminario 14:00–15:30 (1.5 horas) sin docente asignado</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="matematicas">Matemáticas (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="lenguaje">Comunicación y Lenguaje (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="ciencias">Ciencias Naturales (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="sociales">Ciencias Sociales (Básico, Bach. Madurez) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="ingles">Inglés (Básico, Bach. Madurez) <span class="nota">Yara Guzmán - Grupo A</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="psicologia">Psicología <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="sociales">Filosofía <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="administracion">Sociología <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="arte">Expresión Artística (Básico, Bach. Madurez) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–15:30</td>
+                        <td class="taller">Seminario <span class="nota">Sin docente asignado</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 4TO PERITO CONTADOR -->
+        <div id="4to-perito" class="tab-content">
+            <h2 style="color: #d35400; margin-bottom: 15px;">💼 Horario: 4TO PERITO CONTADOR</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados (sin colisiones)</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="contabilidad">Contabilidad de Sociedades <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="contabilidad">Contabilidad (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="administracion">Introducción a la Economía (4to Perito, Perito Adm.) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="lenguaje">Redacción y Correspondencia Mercantil (4to Perito, Secretariado) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="ingles">Inglés Comercial (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="investigacion">Ortografía y Caligrafía (4to Perito, Secretariado) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="derecho">Fundamentos del Derecho <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="administracion">Administración y Organización de Oficina <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="computacion">Computación (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–14:30</td>
+                        <td class="computacion">Programación I (Bach. Comp., 4to Perito) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="taller">Taller / Proyectos Integrados <span class="nota">Docentes Rotativo</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="administracion">Tutoría / Asesorías <span class="nota">Docente Guía</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- PERITO EN ADMINISTRACIÓN -->
+        <div id="perito-adm" class="tab-content">
+            <h2 style="color: #27ae60; margin-bottom: 15px;">🏢 Horario: PERITO EN ADMINISTRACIÓN</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados (sin colisiones)</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="matematicas">Matemáticas I (Básico, Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="contabilidad">Contabilidad General <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="matematicas">Estadística I (Bach. Comp., Perito Adm.) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="administracion">Introducción a la Economía (4to Perito, Perito Adm.) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="administracion">Administración I <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="sociales">Sociología <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="investigacion">Técnicas de Investigación <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="mercadotecnia">Mercadotecnia I <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="tics">Contabilidad II (especialización) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–14:30</td>
+                        <td class="administracion">Refuerzo de Administración <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="taller">Taller / Proyectos Integrados <span class="nota">Docentes Rotativo</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="administracion">Tutoría / Asesorías <span class="nota">Docente Guía</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- SECRETARIADO BILINGÜE -->
+        <div id="secretariado" class="tab-content">
+            <h2 style="color: #e91e63; margin-bottom: 15px;">🌐 Horario: SECRETARIADO BILINGÜE</h2>
+            <p style="margin-bottom: 15px; color: #666;"><strong>Nota:</strong> Cursos compartidos con otros grados</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th class="hora">Hora</th>
+                        <th>Asignatura y Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="hora">8:00–8:30</td>
+                        <td class="matematicas">Matemática Comercial (4to Perito, Secretariado) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">8:30–9:00</td>
+                        <td class="contabilidad">Contabilidad (Bach. Comp., 4to Perito, Secretariado) <span class="nota">Karen Supe</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:00–9:30</td>
+                        <td class="lenguaje">Redacción y Correspondencia (4to Perito, Secretariado) <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">9:30–10:00</td>
+                        <td class="lenguaje">Taquigrafía <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:00–10:30</td>
+                        <td class="receso">🔔 RECESO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">10:30–11:00</td>
+                        <td class="ingles">Inglés Comercial I (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:00–11:30</td>
+                        <td class="investigacion">Ortocaligrafía (4to Perito, Secretariado) <span class="nota">Adela Jiménez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">11:30–12:00</td>
+                        <td class="ingles">Mecanografía <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:00–12:30</td>
+                        <td class="ingles">Inglés Avanzado I <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">12:30–13:30</td>
+                        <td class="almuerzo">🍽️ ALMUERZO</td>
+                    </tr>
+                    <tr>
+                        <td class="hora">13:30–14:00</td>
+                        <td class="computacion">Computación I (4to Perito, Secretariado) <span class="nota">Yara Guzmán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:00–14:30</td>
+                        <td class="administracion">Taller de Redacción Ejecutiva <span class="nota">Claudia Catalán</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">14:30–15:00</td>
+                        <td class="taller">Taller / Proyectos Integrados <span class="nota">Docentes Rotativo</span></td>
+                    </tr>
+                    <tr>
+                        <td class="hora">15:00–15:30</td>
+                        <td class="administracion">Tutoría / Asesorías <span class="nota">Docente Guía</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="button-container">
+            <button onclick="imprimirPDF()">📥 Descargar PDF</button>
+            <button onclick="window.print()">🖨️ Imprimir Todo</button>
+            <button onclick="imprimirTab()">🖨️ Imprimir Pestaña Actual</button>
+        </div>
+    </div>
+    
+    <script>
+        function mostrarTab(event, tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function imprimirPDF() {
+            alert('Para descargar como PDF:\n1. Usa el botón "Imprimir Todo"\n2. Selecciona "Guardar como PDF"\n3. Elige la carpeta de destino');
+            window.print();
+        }
+        
+        function imprimirTab() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
