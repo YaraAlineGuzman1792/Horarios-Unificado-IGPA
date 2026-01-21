@@ -3,393 +3,482 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Académico 2026</title>
+    <title>Sistema de Horarios 2026</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #34495e;
             --accent: #3498db;
-            --bg: #f4f7f6;
-            --karen: #fadbd8; 
-            --adela: #ebdef0; 
-            --claudia: #d4efdf; 
-            --yara: #fdebd0;
+            --bg: #f4f6f7;
+            --border: #ddd;
+            
+            /* Colores Docentes */
+            --karen: #ffcdd2; --karen-text: #b71c1c;
+            --adela: #e1bee7; --adela-text: #4a148c;
+            --claudia: #b2dfdb; --claudia-text: #004d40;
+            --yara: #ffe0b2; --yara-text: #e65100;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; color: #333; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 0; color: #333; }
         
-        /* --- PANTALLA LOGIN --- */
-        #login-screen {
+        /* HEADER */
+        header {
+            background: white; padding: 15px 30px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 1.2rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .user-controls button {
+            padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: 600; font-size: 0.9rem; transition: 0.2s;
+        }
+        .btn-login { background: var(--accent); color: white; }
+        .btn-login:hover { background: #2980b9; }
+        .btn-logout { background: #e74c3c; color: white; display: none; }
+        
+        .container { max-width: 1400px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* MODAL LOGIN */
+        #login-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #2c3e50, #4ca1af);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
+            background: rgba(0,0,0,0.6); z-index: 1000; display: none;
+            justify-content: center; align-items: center;
         }
         .login-box {
-            background: white; padding: 40px; border-radius: 10px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2); text-align: center; width: 300px;
+            background: white; padding: 30px; border-radius: 10px; width: 300px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        .login-box h2 { margin-bottom: 20px; color: var(--primary); }
-        .login-box input {
-            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd;
-            border-radius: 5px; box-sizing: border-box;
-        }
-        .btn-login {
-            width: 100%; padding: 12px; background: var(--accent); color: white;
-            border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;
-        }
-        .btn-login:hover { background: #2980b9; }
-        .error-msg { color: red; font-size: 0.9em; margin-top: 10px; display: none; }
-
-        /* --- SISTEMA PRINCIPAL --- */
-        #app-content { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .login-box input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .error-msg { color: red; font-size: 0.8rem; margin-top: 10px; display: none; }
         
-        .top-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            background: white; padding: 15px 25px; border-radius: 8px; margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        /* PANEL ADMIN */
+        #admin-toolbar {
+            background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; margin-bottom: 20px;
+            border-radius: 5px; display: none; align-items: center; justify-content: space-between;
         }
-        .user-info { font-weight: bold; color: var(--primary); }
-        .btn-logout { background: #c0392b; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .admin-actions button { padding: 8px 15px; margin-left: 5px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; }
+        .btn-save { background: #27ae60; }
+        .btn-dl { background: #2980b9; }
+        .btn-reset { background: #c0392b; }
 
-        /* Panel Admin (Solo Yara) */
-        #admin-panel {
-            background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px;
-            border-radius: 8px; margin-bottom: 20px; display: none;
-        }
-
-        /* Estilos Tabla */
-        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
+        /* TABS */
+        .tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
         .tab-btn {
-            padding: 10px 20px; background: white; border: 1px solid #ccc;
-            border-radius: 20px; cursor: pointer; transition: 0.3s;
+            padding: 10px 20px; border: 1px solid #ddd; background: #fff; border-radius: 20px;
+            cursor: pointer; font-weight: 600; transition: 0.2s; color: #555;
         }
+        .tab-btn:hover { background: #f0f0f0; }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab-btn.docente-only { display: none; background: #546e7a; color: white; } /* Oculto para alumnos */
 
-        .tab-content { display: none; animation: fadeIn 0.3s; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
-
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        
+        /* TABLAS */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem; }
         th { background: var(--primary); color: white; padding: 12px; text-align: left; }
-        td { border: 1px solid #eee; padding: 8px; vertical-align: middle; }
+        td { border: 1px solid var(--border); padding: 8px; vertical-align: middle; }
         
-        /* Celdas Editables (Solo visual cuando es admin) */
-        .editable-active td:not(.hora):not(.static):hover {
-            background: #fff8e1; cursor: text; outline: 1px dashed #f39c12;
-        }
-
-        .hora { background: #f8f9fa; font-weight: bold; text-align: center; width: 100px; }
-        .break { background: #fff9c4; text-align: center; font-weight: bold; color: #f39c12; }
-        .lunch { background: #d4edda; text-align: center; font-weight: bold; color: #155724; }
-
-        .badge { display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-top: 3px; }
-        .doc-karen { background: var(--karen); color: #922b21; }
-        .doc-adela { background: var(--adela); color: #6c3483; }
-        .doc-claudia { background: var(--claudia); color: #117864; }
-        .doc-yara { background: var(--yara); color: #ba4a00; }
-
-        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+        .hora { width: 90px; text-align: center; font-weight: bold; background: #f8f9fa; }
+        .materia { font-weight: 700; display: block; font-size: 0.95rem; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-top: 4px; border: 1px solid rgba(0,0,0,0.1); }
         
-        @media print {
-            #login-screen, .top-bar, .tabs, #admin-panel { display: none; }
-            #app-content { display: block !important; }
-            .tab-content { display: block !important; page-break-after: always; box-shadow: none; border: 1px solid #ddd; }
-        }
+        .doc-karen { background: var(--karen); color: var(--karen-text); }
+        .doc-adela { background: var(--adela); color: var(--adela-text); }
+        .doc-claudia { background: var(--claudia); color: var(--claudia-text); }
+        .doc-yara { background: var(--yara); color: var(--yara-text); }
+
+        .break { background: #fff9c4; text-align: center; font-weight: bold; color: #f57f17; }
+        .lunch { background: #d4edda; text-align: center; font-weight: bold; color: #1b5e20; }
+
+        /* TARJETAS DOCENTES */
+        .doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .doc-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: white; }
+        .doc-card h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .doc-card ul { padding-left: 20px; line-height: 1.6; }
+
+        /* Edición (Solo Admin) */
+        body.is-admin td:not(.static)[contenteditable]:hover { background: #fffde7; cursor: text; outline: 1px dashed #f39c12; }
+
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @media print { header, .tabs, #admin-toolbar { display: none; } .tab-content { display: block !important; page-break-after: always; } .container { box-shadow: none; margin: 0; padding: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <div class="login-box">
-            <h2>🔐 Acceso Académico</h2>
-            <input type="text" id="username" placeholder="Usuario">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button class="btn-login" onclick="login()">Entrar</button>
-            <p class="error-msg" id="login-error">Credenciales incorrectas</p>
-            <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">
-                (Prueba: yara / admin2026)
-            </p>
+<header>
+    <div class="logo">🎓 Instituto 2026 <span id="user-display" style="font-weight:normal; font-size:0.9rem; margin-left:15px; color:#7f8c8d;">(Vista Alumno)</span></div>
+    <div class="user-controls">
+        <button class="btn-login" onclick="showLogin()">🔒 Acceso Docentes</button>
+        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+    </div>
+</header>
+
+<div class="container">
+
+    <div id="admin-toolbar">
+        <span><strong>👩‍💻 Panel de Edición (Admin):</strong> Haz clic en las celdas para editar.</span>
+        <div class="admin-actions">
+            <button class="btn-save" onclick="guardarCambios()">💾 Guardar</button>
+            <button class="btn-dl" onclick="descargarHTML()">⬇️ Descargar Archivo</button>
+            <button class="btn-reset" onclick="resetear()">🔄 Resetear</button>
         </div>
     </div>
 
-    <div id="app-content">
+    <div class="tabs" id="main-tabs">
+        <button class="tab-btn active" onclick="ver('basico')">Básico</button>
+        <button class="tab-btn" onclick="ver('bach-mad')">Bach. Madurez</button>
+        <button class="tab-btn" onclick="ver('bach-comp')">Bach. Computación</button>
+        <button class="tab-btn" onclick="ver('4to-perito')">4to Perito</button>
+        <button class="tab-btn" onclick="ver('perito-adm')">Perito Adm</button>
+        <button class="tab-btn" onclick="ver('secre')">Secretariado</button>
+        <button class="tab-btn docente-only" id="btn-docentes" onclick="ver('docentes')">👩‍🏫 Mis Horarios</button>
+    </div>
+
+    <div id="basico" class="tab-content active">
+        <h2>📚 Ciclo Básico</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Idioma Garífuna</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">09:00</td><td><span class="materia">Ciencias Sociales</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO (30 min)</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Expresión Artística</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Emprendimiento</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">11:30</td><td><span class="materia">TAC (Tecnología)</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Idioma Extranjero (Inglés)</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO (1 Hora)</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">Ciencias Naturales</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+        </table>
+    </div>
+
+    <div id="bach-mad" class="tab-content">
+        <h2>📖 Bachillerato por Madurez</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Ciencias Naturales</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">09:00</td><td><span class="materia">Ciencias Sociales</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Expresión Artística</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Filosofía</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">11:30</td><td><span class="materia">TICs</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Inglés (L3)</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">SEMINARIO (30 min)</span></td><td><span class="badge">Asesor</span></td></tr>
+            <tr><td class="hora static">14:00</td><td><span class="materia">Psicología</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+        </table>
+    </div>
+
+    <div id="bach-comp" class="tab-content">
+        <h2>💻 Bachillerato en Computación</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Téc. Reparación</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Contabilidad I</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">09:00</td><td><span class="materia">Téc. Mantenimiento</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Computación I</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Inglés I</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Física I</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">11:30</td><td><span class="materia">Estudios Sociales</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">Programación I</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">14:00</td><td><span class="materia">Matemáticas I</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">14:30</td><td><span class="materia">Estadística I</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+        </table>
+    </div>
+
+    <div id="4to-perito" class="tab-content">
+        <h2>💼 4to Perito Contador</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Redacción y Corresp.</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">09:00</td><td><span class="materia">Fundamentos Derecho</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Ortografía</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Admin. Org. Oficina</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">Programación</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">14:00</td><td><span class="materia">Intro Economía</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+        </table>
+    </div>
+
+    <div id="perito-adm" class="tab-content">
+        <h2>🏢 Perito en Administración</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Mercadotecnia I</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">09:00</td><td><span class="materia">Estadística</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Administración I</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:30</td><td><span class="materia">Técnicas Investigación</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">Sociología</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">14:30</td><td><span class="materia">Intro Economía</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+        </table>
+    </div>
+
+    <div id="secre" class="tab-content">
+        <h2>🌐 Secretariado Bilingüe</h2>
+        <table class="editable-table">
+            <tr><th class="hora static">Hora</th><th>Materia</th><th>Docente</th></tr>
+            <tr><td class="hora static">08:00</td><td><span class="materia">Redacción y Corresp.</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr><td class="hora static">08:30</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">09:30</td><td><span class="materia">Ortografía</span></td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
+            <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
+            <tr><td class="hora static">10:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">11:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">12:00</td><td><span class="materia">Taquigrafía</span></td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
+            <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
+            <tr><td class="hora static">13:30</td><td><span class="materia">Matemática Comercial</span></td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
+            <tr><td class="hora static">14:00</td><td><span class="materia">Mecanografía</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+            <tr><td class="hora static">14:30</td><td><span class="materia">Inglés Avanzado</span></td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
+        </table>
+    </div>
+
+    <div id="docentes" class="tab-content">
+        <h2>👩‍🏫 Horarios de Docentes</h2>
+        <p>Vista privada del personal docente.</p>
         
-        <div class="top-bar">
-            <div>
-                <span style="font-size: 1.2rem;">📅 Horarios 2026</span>
-                <span id="welcome-msg" style="margin-left: 20px; font-weight: normal; color: #666;"></span>
+        <div class="doc-grid">
+            
+            <div class="doc-card" id="card-karen" style="border-left:5px solid #b71c1c;">
+                <h3 style="color:#b71c1c;">Karen Supe</h3>
+                <ul>
+                    <li>08:00: Mate (PA)</li>
+                    <li>08:30: Conta (BC/4to/Sec)</li>
+                    <li>09:00: Estadística (PA)</li>
+                    <li>09:30: Mate (Bas/BM)</li>
+                    <li>11:00: Física (BC)</li>
+                    <li>11:30: Mate (4to/Mad)</li>
+                    <li>12:00: Conta (PA)</li>
+                    <li>13:30: Mate Com (Sec)</li>
+                    <li>14:00: Mate (BC)</li>
+                    <li>14:30: Estadística (BC)</li>
+                </ul>
             </div>
-            <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-        </div>
 
-        <div id="admin-panel">
-            <strong>🛠️ Panel de Control (Solo Yara):</strong>
-            <button onclick="guardarCambios()" style="padding: 5px 15px; margin-left: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">💾 Guardar Cambios</button>
-            <button onclick="descargarCopia()" style="padding: 5px 15px; margin-left: 5px; background: #2980b9; color: white; border: none; border-radius: 4px; cursor: pointer;">⬇️ Descargar Copia</button>
-            <button onclick="resetear()" style="padding: 5px 15px; margin-left: 5px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer;">⚠️ Resetear</button>
-            <span style="font-size: 0.8rem; margin-left: 10px; color: #d35400;">* Haz clic en las celdas para editar</span>
-        </div>
+            <div class="doc-card" id="card-adela" style="border-left:5px solid #4a148c;">
+                <h3 style="color:#4a148c;">Adela Jiménez</h3>
+                <ul>
+                    <li>08:00: Lenguaje (Bas/BM)</li>
+                    <li>08:30: CCNN (BM)</li>
+                    <li>09:00: Derecho (4to)</li>
+                    <li>09:30: Ortografía (4to/Sec)</li>
+                    <li>10:30: Exp Art (Bas/BM)</li>
+                    <li>11:00: Emprendimiento (Bas)</li>
+                    <li>11:30: Tec Inv (PA)</li>
+                    <li>12:00: Lenguaje (BC)</li>
+                    <li>13:30: CCNN (Bas)</li>
+                    <li>14:00: Psicología (BM)</li>
+                </ul>
+            </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="verTab('basico')">Básico</button>
-            <button class="tab-btn" onclick="verTab('bach-mad')">Bach. Madurez</button>
-            <button class="tab-btn" onclick="verTab('bach-comp')">Bach. Computación</button>
-            <button class="tab-btn" onclick="verTab('4to-perito')">4to Perito</button>
-            <button class="tab-btn" onclick="verTab('perito-adm')">Perito Adm</button>
-            <button class="tab-btn" onclick="verTab('secre')">Secretariado</button>
-            <button class="tab-btn" onclick="verTab('docentes')" style="background:#34495e; color:white">Vista Docentes</button>
-        </div>
+            <div class="doc-card" id="card-claudia" style="border-left:5px solid #004d40;">
+                <h3 style="color:#004d40;">Claudia Catalán</h3>
+                <ul>
+                    <li>08:00: Redacción (4to/Sec)</li>
+                    <li>08:30: Garífuna (Bas)</li>
+                    <li>09:00: Sociales (Bas/BM)</li>
+                    <li>09:30: Admin (PA)</li>
+                    <li>11:00: Filosofía (BM)</li>
+                    <li>11:30: Sociales (BC)</li>
+                    <li>12:00: Admin/Taqui (4to/Sec)</li>
+                    <li>13:30: Sociología (PA)</li>
+                    <li>14:00: Economía (4to)</li>
+                    <li>14:30: Economía (PA)</li>
+                </ul>
+            </div>
 
-        <div id="basico" class="tab-content active">
-            <h3>📚 Ciclo Básico (Separado de Madurez)</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>TAC (Tecnología)</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Idioma Garífuna</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">09:00</td><td>Ciencias Sociales</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Matemáticas</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO (30 min)</td></tr>
-                <tr><td class="hora">10:30</td><td>Com. y Lenguaje</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">11:00</td><td>Ciencias Naturales</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">11:30</td><td>Expresión Artística</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Emprendimiento</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO (1 Hora)</td></tr>
-                <tr><td class="hora">13:30</td><td>Idioma Inglés</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-            </table>
+            <div class="doc-card" id="card-yara" style="border-left:5px solid #e65100;">
+                <h3 style="color:#e65100;">Yara Guzmán</h3>
+                <ul>
+                    <li>08:00: Reparación (BC)</li>
+                    <li>08:30: Merca (PA)</li>
+                    <li>09:00: Mantenimiento (BC)</li>
+                    <li>09:30: Compu (BC)</li>
+                    <li>10:30: Inglés (BC/4to/PA/Sec)</li>
+                    <li>11:00: Compu (4to/PA/Sec)</li>
+                    <li>11:30: TAC/TIC (Bas/BM)</li>
+                    <li>12:00: Inglés (Bas/BM)</li>
+                    <li>13:30: Progra (BC/4to)</li>
+                    <li>14:00: Mecanografía (Sec)</li>
+                    <li>14:30: Inglés Adv (Sec)</li>
+                </ul>
+            </div>
         </div>
-
-        <div id="bach-mad" class="tab-content">
-            <h3>📖 Bachillerato por Madurez (Separado de Básico)</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>Com. y Lenguaje</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Ciencias Naturales</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">09:00</td><td>Filosofía</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Psicología</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
-                <tr><td class="hora">10:30</td><td>Inglés (L3)</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:00</td><td>TICs</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:30</td><td>Matemáticas</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Ciencias Sociales</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
-                <tr><td class="hora">13:30</td><td>SEMINARIO</td><td><span class="badge">Asesor</span></td></tr>
-                <tr><td class="hora">14:00</td><td>Expresión Artística</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-            </table>
-        </div>
-
-        <div id="bach-comp" class="tab-content">
-            <h3>💻 Bachillerato en Computación</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>Téc. Reparación</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Contabilidad I</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">09:00</td><td>Téc. Mantenimiento</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Computación I</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
-                <tr><td class="hora">10:30</td><td>Inglés I</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:00</td><td>Física I</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">11:30</td><td>Estudios Sociales</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Com. y Lenguaje</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
-                <tr><td class="hora">13:30</td><td>Programación I</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">14:00</td><td>Matemáticas I</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">14:30</td><td>Estadística I</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-            </table>
-        </div>
-
-        <div id="4to-perito" class="tab-content">
-            <h3>💼 4to Perito Contador</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>Redacción y Corresp.</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Contabilidad</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">09:00</td><td>Fundamentos Derecho</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Ortografía</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
-                <tr><td class="hora">10:30</td><td>Inglés Comercial</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:00</td><td>Computación</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:30</td><td>Matemáticas</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Admin. Org. Oficina</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
-                <tr><td class="hora">13:30</td><td>Programación</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">14:00</td><td>Intro Economía</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-            </table>
-        </div>
-
-        <div id="perito-adm" class="tab-content">
-            <h3>🏢 Perito en Administración</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>Matemáticas</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Mercadotecnia I</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">09:00</td><td>Estadística</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Administración I</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
-                <tr><td class="hora">10:30</td><td>Inglés Comercial</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:00</td><td>Computación</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:30</td><td>Técnicas Inv.</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Contabilidad</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
-                <tr><td class="hora">13:30</td><td>Sociología</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">14:30</td><td>Intro Economía</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-            </table>
-        </div>
-
-        <div id="secre" class="tab-content">
-            <h3>🌐 Secretariado Bilingüe</h3>
-            <table class="schedule-table">
-                <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
-                <tr><td class="hora">08:00</td><td>Redacción y Corresp.</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr><td class="hora">08:30</td><td>Contabilidad</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">09:30</td><td>Ortografía</td><td><span class="badge doc-adela">Adela Jiménez</span></td></tr>
-                <tr class="break"><td class="hora static">10:00</td><td colspan="2" class="static">🔔 RECESO</td></tr>
-                <tr><td class="hora">10:30</td><td>Inglés Comercial</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">11:00</td><td>Computación</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">12:00</td><td>Taquigrafía</td><td><span class="badge doc-claudia">Claudia Catalán</span></td></tr>
-                <tr class="lunch"><td class="hora static">12:30</td><td colspan="2" class="static">🍽️ ALMUERZO</td></tr>
-                <tr><td class="hora">13:30</td><td>Matemática Com.</td><td><span class="badge doc-karen">Karen Supe</span></td></tr>
-                <tr><td class="hora">14:00</td><td>Mecanografía</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-                <tr><td class="hora">14:30</td><td>Inglés Avanzado</td><td><span class="badge doc-yara">Yara Guzmán</span></td></tr>
-            </table>
-        </div>
-
-        <div id="docentes" class="tab-content">
-            <h3>👨‍🏫 Lista de Maestras (Solo Lectura)</h3>
-            <p>Utilice esta vista para verificar donde está cada maestra.</p>
-            <ul>
-                <li><span class="badge doc-karen">Karen Supe</span> - Área Numérica / Contable</li>
-                <li><span class="badge doc-adela">Adela Jiménez</span> - Área Humanística / Ciencias</li>
-                <li><span class="badge doc-claudia">Claudia Catalán</span> - Área Administrativa / Social</li>
-                <li><span class="badge doc-yara">Yara Guzmán</span> - Área Tecnología / Inglés</li>
-            </ul>
-        </div>
-        
-        <button onclick="window.print()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border:none; border-radius:4px; cursor:pointer;">🖨️ Imprimir Página</button>
-
     </div>
+</div>
 
-    <script>
-        // --- BASE DE DATOS DE USUARIOS ---
-        const USERS = {
-            'yara': { pass: 'admin2026', role: 'admin', name: 'Licda. Yara Guzmán' },
-            'karen': { pass: 'profe123', role: 'view', name: 'Licda. Karen Supe' },
-            'adela': { pass: 'profe123', role: 'view', name: 'Licda. Adela Jiménez' },
-            'claudia': { pass: 'profe123', role: 'view', name: 'Licda. Claudia Catalán' },
-            'alumno': { pass: '1234', role: 'view', name: 'Estudiante / Invitado' }
-        };
+<div id="login-modal">
+    <div class="login-box">
+        <h3>🔐 Área Docente</h3>
+        <p>Ingrese sus credenciales</p>
+        <input type="text" id="username" placeholder="Usuario (Ej: yara)">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button class="btn-submit" onclick="validarLogin()">Ingresar</button>
+        <button class="btn-submit" onclick="hideLogin()" style="background:#ccc; margin-top:5px; color:#333;">Cancelar</button>
+        <p class="error-msg" id="error-msg">Usuario o contraseña incorrectos.</p>
+    </div>
+</div>
 
-        const STORAGE_KEY = 'horario_data_v2';
-        let currentUser = null;
+<script>
+    // --- CONFIGURACIÓN DE USUARIOS ---
+    const USERS = {
+        'yara': { pass: 'admin2026', role: 'admin', name: 'Licda. Yara Guzmán' },
+        'karen': { pass: '1234', role: 'teacher', name: 'Licda. Karen Supe' },
+        'adela': { pass: '1234', role: 'teacher', name: 'Licda. Adela Jiménez' },
+        'claudia': { pass: '1234', role: 'teacher', name: 'Licda. Claudia Catalán' }
+    };
 
-        // --- FUNCIONES DE LOGIN ---
-        function login() {
-            const u = document.getElementById('username').value.toLowerCase().trim();
-            const p = document.getElementById('password').value.trim();
-            const errorMsg = document.getElementById('login-error');
+    const STORAGE_KEY = 'horarios_2026_data';
+    let currentUser = null;
 
-            if (USERS[u] && USERS[u].pass === p) {
-                currentUser = USERS[u];
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                document.getElementById('welcome-msg').textContent = `Bienvenida, ${currentUser.name}`;
-                
-                // Configurar permisos
-                if (currentUser.role === 'admin') {
-                    document.getElementById('admin-panel').style.display = 'block';
-                    activarEdicion(true);
-                    document.body.classList.add('editable-active');
-                } else {
-                    document.getElementById('admin-panel').style.display = 'none';
-                    activarEdicion(false);
-                    document.body.classList.remove('editable-active');
-                }
-                
-                cargarDatos();
-            } else {
-                errorMsg.style.display = 'block';
-            }
+    // --- FUNCIONES DE LOGIN ---
+    function showLogin() {
+        document.getElementById('login-modal').style.display = 'flex';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('error-msg').style.display = 'none';
+        document.getElementById('username').focus();
+    }
+
+    function hideLogin() {
+        document.getElementById('login-modal').style.display = 'none';
+    }
+
+    function validarLogin() {
+        const u = document.getElementById('username').value.toLowerCase().trim();
+        const p = document.getElementById('password').value.trim();
+
+        if (USERS[u] && USERS[u].pass === p) {
+            currentUser = { ...USERS[u], id: u };
+            iniciarSesion();
+        } else {
+            document.getElementById('error-msg').style.display = 'block';
         }
+    }
 
-        function logout() {
+    function iniciarSesion() {
+        hideLogin();
+        
+        // UI Updates
+        document.querySelector('.btn-login').style.display = 'none';
+        document.querySelector('.btn-logout').style.display = 'block';
+        document.getElementById('user-display').textContent = `(Usuario: ${currentUser.name})`;
+        document.getElementById('user-display').style.color = '#27ae60';
+        document.getElementById('user-display').style.fontWeight = 'bold';
+        
+        // Mostrar tab docentes
+        document.querySelectorAll('.docente-only').forEach(el => el.style.display = 'block');
+
+        // Lógica de Vistas
+        if (currentUser.role === 'admin') {
+            document.getElementById('admin-toolbar').style.display = 'flex';
+            document.body.classList.add('is-admin');
+            habilitarEdicion(true);
+            // Yara ve a todos los docentes
+            document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'block');
+        } else {
+            // Es Teacher (Karen, Adela, Claudia)
+            // Ir directo a la pestaña de docentes
+            ver('docentes');
+            // Filtrar cards: Ocultar todas, mostrar solo la suya
+            document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'none');
+            const myCard = document.getElementById(`card-${currentUser.id}`);
+            if(myCard) myCard.style.display = 'block';
+        }
+    }
+
+    function logout() {
+        location.reload(); // Recarga simple para limpiar sesión
+    }
+
+    // --- NAVEGACIÓN TABS ---
+    function ver(id) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(id).classList.add('active');
+        
+        // Encontrar el botón correspondiente
+        const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(`'${id}'`));
+        if(btn) btn.classList.add('active');
+    }
+
+    // --- EDICIÓN Y GUARDADO ---
+    function habilitarEdicion(activar) {
+        const cells = document.querySelectorAll('.editable-table td');
+        cells.forEach(cell => {
+            if(!cell.classList.contains('static') && !cell.classList.contains('hora')) {
+                cell.setAttribute('contenteditable', activar);
+            }
+        });
+    }
+
+    function guardarCambios() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        
+        const data = {};
+        document.querySelectorAll('.editable-table').forEach((table, index) => {
+            data[`table_${index}`] = table.innerHTML;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        alert('✅ Cambios guardados en este navegador.');
+    }
+
+    function cargarDatos() {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+            const parsed = JSON.parse(data);
+            const tables = document.querySelectorAll('.editable-table');
+            tables.forEach((table, index) => {
+                if (parsed[`table_${index}`]) {
+                    table.innerHTML = parsed[`table_${index}`];
+                }
+            });
+        }
+    }
+
+    function resetear() {
+        if(confirm('¿Borrar cambios y volver al original?')) {
+            localStorage.removeItem(STORAGE_KEY);
             location.reload();
         }
+    }
 
-        // --- NAVEGACIÓN TABS ---
-        function verTab(id) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+    function descargarHTML() {
+        const html = document.documentElement.outerHTML;
+        const blob = new Blob([html], {type: 'text/html'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Horarios_2026_Sistema.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 
-        // --- SISTEMA DE EDICIÓN ---
-        function activarEdicion(enable) {
-            const cells = document.querySelectorAll('td');
-            cells.forEach(cell => {
-                // No editar horas ni recesos fijos
-                if (!cell.classList.contains('hora') && !cell.classList.contains('static')) {
-                    cell.setAttribute('contenteditable', enable);
-                    if(enable) {
-                        cell.addEventListener('input', () => {
-                            // Opcional: Auto-guardado temporal en memoria
-                        });
-                    }
-                }
-            });
-        }
-
-        function guardarCambios() {
-            if (currentUser.role !== 'admin') return;
-            const tables = {};
-            document.querySelectorAll('.schedule-table').forEach((table, index) => {
-                tables[index] = table.innerHTML;
-            });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tables));
-            alert('✅ Cambios guardados en este navegador.');
-        }
-
-        function cargarDatos() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            if (data) {
-                const tablesData = JSON.parse(data);
-                const tables = document.querySelectorAll('.schedule-table');
-                tables.forEach((table, index) => {
-                    if (tablesData[index]) {
-                        table.innerHTML = tablesData[index];
-                    }
-                });
-                // Re-aplicar editable si es admin
-                if (currentUser && currentUser.role === 'admin') {
-                    activarEdicion(true);
-                }
-            }
-        }
-
-        function resetear() {
-            if (confirm('¿Borrar todos los cambios personalizados y volver al original?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        }
-
-        function descargarCopia() {
-            // Limpia el estado de edición antes de guardar
-            const rawHTML = document.documentElement.outerHTML;
-            const blob = new Blob([rawHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Horario_Academico_2026.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Enter para login
-        document.getElementById('password').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') login();
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarDatos();
+        // Enter en password login
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') validarLogin();
         });
-    </script>
+    });
+
+</script>
 
 </body>
 </html>
