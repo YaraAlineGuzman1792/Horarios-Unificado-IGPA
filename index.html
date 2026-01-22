@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary: #2c3e50;
+            --secondary: #34495e;
             --accent: #d35400;
             --bg: #eceff1;
             
@@ -17,7 +18,7 @@
             --yara-bg: #fff3e0; --yara-border: #ef6c00;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
         
         /* HEADER */
         header { background: white; padding: 15px 30px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -27,7 +28,7 @@
         .btn-access:hover { background: var(--primary); color: white; }
         .btn-logout { background: #c62828 !important; color: white !important; border: none; display: none; }
 
-        /* PANEL DE ADMINISTRACIÓN */
+        /* PANEL ADMIN */
         #admin-panel {
             display: none; background: #fffde7; border: 2px solid #fff59d; padding: 15px; 
             margin-bottom: 25px; border-radius: 8px; align-items: center; gap: 20px; flex-wrap: wrap;
@@ -103,7 +104,7 @@
             <strong>Estilo:</strong>
             <input type="color" id="bg-color" value="#ffffff" title="Fondo Celda" style="cursor:pointer; height:30px;">
             <button class="admin-btn" onclick="applyColor()">🖌️ Pintar</button>
-            <button class="admin-btn" onclick="autoHighlight()">✨ Resaltar Maestras</button>
+            <button class="admin-btn" onclick="autoHighlight()">✨ Resaltar</button>
         </div>
         <div class="toolbar-group">
             <strong>Archivo:</strong>
@@ -129,9 +130,9 @@
             <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
             <tr><td class="hora">08:00</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">08:30</td><td><span class="materia">Idioma Garífuna</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr><td class="hora">09:00</td><td><span class="materia">Ciencias Sociales</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr><td class="hora">09:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO (10:00 - 10:30)</td></tr>
+            <tr><td class="hora">09:00</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
+            <tr><td class="hora">09:30</td><td><span class="materia">Ciencias Sociales</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO (10:00 - 10:30)</td></tr>
             <tr><td class="hora">10:30</td><td><span class="materia">Expresión Artística</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">11:00</td><td><span class="materia">Emprendimiento</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">11:30</td><td><span class="materia">TAC (Tecnología)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
@@ -150,14 +151,16 @@
             <tr><td class="hora">08:30</td><td><span class="materia">Ciencias Naturales</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">09:00</td><td><span class="materia">Lengua y Literatura</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">09:30</td><td><span class="materia">Psicología</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO</td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO</td></tr>
             <tr><td class="hora">10:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr><td class="hora">11:00</td><td><span class="materia">TICs</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">11:30</td><td><span class="materia">Inglés (L3)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">12:00</td><td><span class="materia">Sociología</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">11:00</td><td><span class="materia">Estudios Sociales</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">11:30</td><td><span class="materia">Sociología</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">12:00</td><td><span class="materia">Seminario</span></td><td><span class="badge">Asesor</span></td></tr>
             <tr class="lunch"><td class="hora">12:30</td><td colspan="2">🍽️ ALMUERZO</td></tr>
-            <tr><td class="hora">13:30</td><td><span class="materia">Seminario</span></td><td><span class="badge">Asesor</span></td></tr>
-            <tr><td class="hora">14:00</td><td><span class="materia">Expresión Artística</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">13:30</td><td><span class="materia">TICs</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">14:00</td><td><span class="materia">Inglés (L3)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">14:30</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">15:00</td><td><span class="materia">Expresión Artística</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
         </table>
     </div>
 
@@ -169,15 +172,15 @@
             <tr><td class="hora">08:30</td><td><span class="materia">Téc. Mantenimiento</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">09:00</td><td><span class="materia">Computación I</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">09:30</td><td><span class="materia">Estadística I</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO</td></tr>
-            <tr><td class="hora">10:30</td><td><span class="materia">Inglés I</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO</td></tr>
+            <tr><td class="hora">10:30</td><td><span class="materia">Inglés I (Unificado)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">11:00</td><td><span class="materia">Física I</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
             <tr><td class="hora">11:30</td><td><span class="materia">Contabilidad I</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr><td class="hora">12:00</td><td><span class="materia">Estudios Sociales</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">12:00</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr class="lunch"><td class="hora">12:30</td><td colspan="2">🍽️ ALMUERZO</td></tr>
             <tr><td class="hora">13:30</td><td><span class="materia">Programación I</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">14:00</td><td><span class="materia">Matemáticas I</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr><td class="hora">14:30</td><td><span class="materia">Com. y Lenguaje</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">14:30</td><td><span class="materia">Estudios Sociales</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr><td class="hora">15:00</td><td><span class="materia">Lab. Programación</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
         </table>
     </div>
@@ -188,16 +191,18 @@
             <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
             <tr><td class="hora">08:00</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
             <tr><td class="hora">08:30</td><td><span class="materia">Matemáticas</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr><td class="hora">09:00</td><td><span class="materia">Fund. Derecho</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
-            <tr><td class="hora">09:30</td><td><span class="materia">Redacción</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO</td></tr>
-            <tr><td class="hora">10:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">11:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">09:00</td><td><span class="materia">Fundamentos Derecho</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">09:30</td><td><span class="materia">Ortografía</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO</td></tr>
+            <tr><td class="hora">10:30</td><td><span class="materia">Inglés Comercial (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">11:00</td><td><span class="materia">Computación (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">11:30</td><td><span class="materia">Intro Economía</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr><td class="hora">12:00</td><td><span class="materia">Ortografía</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">12:00</td><td><span class="materia">Admin. Org. Oficina</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr class="lunch"><td class="hora">12:30</td><td colspan="2">🍽️ ALMUERZO</td></tr>
-            <tr><td class="hora">13:30</td><td><span class="materia">Admin. Org. Oficina</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">13:30</td><td><span class="materia">Redacción y Corresp.</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr><td class="hora">14:00</td><td><span class="materia">Programación</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">14:30</td><td><span class="materia">Repaso Contable</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
+            <tr><td class="hora">15:00</td><td><span class="materia">Estudio Dirigido</span></td><td><span class="badge">---</span></td></tr>
         </table>
     </div>
 
@@ -209,14 +214,16 @@
             <tr><td class="hora">08:30</td><td><span class="materia">Mercadotecnia I</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">09:00</td><td><span class="materia">Estadística</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
             <tr><td class="hora">09:30</td><td><span class="materia">Administración I</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO</td></tr>
-            <tr><td class="hora">10:30</td><td><span class="materia">Técnicas Inv.</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
-            <tr><td class="hora">11:00</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
-            <tr><td class="hora">11:30</td><td><span class="materia">Sociología</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr><td class="hora">12:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO</td></tr>
+            <tr><td class="hora">10:30</td><td><span class="materia">Inglés Comercial (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">11:00</td><td><span class="materia">Computación (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">11:30</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
+            <tr><td class="hora">12:00</td><td><span class="materia">Sociología</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr class="lunch"><td class="hora">12:30</td><td colspan="2">🍽️ ALMUERZO</td></tr>
             <tr><td class="hora">13:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">14:00</td><td><span class="materia">Intro Economía</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">14:00</td><td><span class="materia">Técnicas Inv.</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
+            <tr><td class="hora">14:30</td><td><span class="materia">Intro Economía</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
+            <tr><td class="hora">15:00</td><td><span class="materia">Taller Admin</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
         </table>
     </div>
 
@@ -225,18 +232,19 @@
         <table class="schedule-table">
             <tr><th class="hora">Hora</th><th>Materia</th><th>Docente</th></tr>
             <tr><td class="hora">08:00</td><td><span class="materia">Mecanografía</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">08:30</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
+            <tr><td class="hora">08:30</td><td><span class="materia">Redacción y Corresp.</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr><td class="hora">09:00</td><td><span class="materia">Taquigrafía</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr><td class="hora">09:30</td><td><span class="materia">Redacción</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
-            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECESO</td></tr>
-            <tr><td class="hora">10:30</td><td><span class="materia">Inglés Comercial</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
-            <tr><td class="hora">11:00</td><td><span class="materia">Computación</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">09:30</td><td><span class="materia">Contabilidad</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
+            <tr class="break"><td class="hora">10:00</td><td colspan="2">🔔 RECREO</td></tr>
+            <tr><td class="hora">10:30</td><td><span class="materia">Inglés Comercial (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">11:00</td><td><span class="materia">Computación (Uni)</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">11:30</td><td><span class="materia">Ortografía</span></td><td><span class="badge doc-adela">Profa. Adela Jiménez</span></td></tr>
             <tr><td class="hora">12:00</td><td><span class="materia">Matemática Com.</span></td><td><span class="badge doc-karen">Profa. Karen Supe</span></td></tr>
             <tr class="lunch"><td class="hora">12:30</td><td colspan="2">🍽️ ALMUERZO</td></tr>
             <tr><td class="hora">13:30</td><td><span class="materia">Taller Redacción</span></td><td><span class="badge doc-claudia">Profa. Claudia Catalán</span></td></tr>
             <tr><td class="hora">14:00</td><td><span class="materia">Inglés Avanzado</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
             <tr><td class="hora">14:30</td><td><span class="materia">Inglés Avanzado II</span></td><td><span class="badge doc-yara">Inga. Yara Guzmán</span></td></tr>
+            <tr><td class="hora">15:00</td><td><span class="materia">Estudio Dirigido</span></td><td><span class="badge">---</span></td></tr>
         </table>
     </div>
 
@@ -247,62 +255,68 @@
             <div class="doc-card" id="card-karen" style="border-left: 5px solid #c62828;">
                 <h3>Profa. Karen Supe</h3>
                 <ul>
-                    <li><strong>08:00</strong> Contabilidad (4to Perito) / Matemáticas (Perito Adm)</li>
-                    <li><strong>08:30</strong> Contabilidad (Secre) / Matemáticas (4to Perito)</li>
-                    <li><strong>09:00</strong> Estadística (Perito Adm)</li>
-                    <li><strong>09:30</strong> Matemáticas (Básico) / Estadística (Bach Comp)</li>
-                    <li><strong>10:30</strong> Matemáticas (Bach Mad)</li>
-                    <li><strong>11:00</strong> Física (Bach Comp) / Contabilidad (Perito Adm)</li>
-                    <li><strong>11:30</strong> Contabilidad (Bach Comp)</li>
-                    <li><strong>12:00</strong> Mat. Comercial (Secre)</li>
-                    <li><strong>14:00</strong> Matemáticas (Bach Comp)</li>
+                    <li><strong>08:00</strong> Contabilidad (4to) / Matemáticas (PA)</li>
+                    <li><strong>08:30</strong> Matemáticas (4to) / Contabilidad (BC)</li>
+                    <li><strong>09:00</strong> Matemáticas (Básico) / Estadística (PA)</li>
+                    <li><strong>09:30</strong> Matemáticas (Básico) / Estadística (BC) / Contabilidad (Sec)</li>
+                    <li><strong>10:30</strong> Matemáticas (Mad)</li>
+                    <li><strong>11:00</strong> Física (BC) / Contabilidad (PA)</li>
+                    <li><strong>11:30</strong> Contabilidad (BC) / Matemáticas (4to) / Contabilidad (PA)</li>
+                    <li><strong>12:00</strong> Mat. Comercial (Sec)</li>
+                    <li><strong>14:00</strong> Matemáticas (BC)</li>
+                    <li><strong>14:30</strong> Repaso Contable (4to) / Estadística (BC)</li>
                 </ul>
             </div>
 
             <div class="doc-card" id="card-adela" style="border-left: 5px solid #6a1b9a;">
                 <h3>Profa. Adela Jiménez</h3>
                 <ul>
-                    <li><strong>08:00</strong> Com. y Lenguaje (Básico)</li>
-                    <li><strong>08:30</strong> Ciencias Naturales (Bach Mad)</li>
-                    <li><strong>09:00</strong> Lengua (Bach Mad) / Fund. Derecho (4to Perito)</li>
-                    <li><strong>09:30</strong> Psicología (Bach Mad)</li>
-                    <li><strong>10:30</strong> Expresión Artística (Básico) / Técnicas Inv (Perito Adm)</li>
-                    <li><strong>11:00</strong> Emprendimiento (Básico)</li>
-                    <li><strong>11:30</strong> Ortografía (Secre)</li>
-                    <li><strong>12:00</strong> Ortografía (4to Perito)</li>
-                    <li><strong>13:30</strong> Ciencias Naturales (Básico)</li>
-                    <li><strong>14:00</strong> Exp. Artística (Bach Mad)</li>
-                    <li><strong>14:30</strong> Com. Lenguaje (Bach Comp)</li>
+                    <li><strong>08:00</strong> Com. y Lenguaje (Bas)</li>
+                    <li><strong>08:30</strong> CCNN (Mad)</li>
+                    <li><strong>09:00</strong> Lengua (Mad) / Derecho (4to)</li>
+                    <li><strong>09:30</strong> Psicología (Mad) / Ortografía (4to)</li>
+                    <li><strong>10:30</strong> Exp Art (Bas)</li>
+                    <li><strong>11:00</strong> Emprendimiento (Bas)</li>
+                    <li><strong>11:30</strong> Ortografía (Sec)</li>
+                    <li><strong>12:00</strong> Com Lenguaje (BC) / Ortografía (4to)</li>
+                    <li><strong>13:30</strong> CCNN (Bas)</li>
+                    <li><strong>14:00</strong> Técnicas Inv (PA)</li>
+                    <li><strong>14:30</strong> Com. y Lenguaje (Mad)</li>
+                    <li><strong>15:00</strong> Exp Art (Mad) / Com Leng (BC)</li>
                 </ul>
             </div>
 
             <div class="doc-card" id="card-claudia" style="border-left: 5px solid #00695c;">
                 <h3>Profa. Claudia Catalán</h3>
                 <ul>
-                    <li><strong>08:00</strong> Filosofía (Bach Mad)</li>
-                    <li><strong>08:30</strong> Idioma Garífuna (Básico)</li>
-                    <li><strong>09:00</strong> Ciencias Sociales (Básico) / Taquigrafía (Secre)</li>
-                    <li><strong>09:30</strong> Redacción (Secre) / Administración I (Perito Adm)</li>
-                    <li><strong>11:30</strong> Intro Economía (4to Perito) / Sociología (Perito Adm)</li>
-                    <li><strong>12:00</strong> Estudios Sociales (Bach Comp) / Sociología (Bach Mad)</li>
-                    <li><strong>13:30</strong> Admin. Org. Oficina (4to Perito) / Taller Redacción (Secre)</li>
-                    <li><strong>14:00</strong> Intro Economía (Perito Adm)</li>
+                    <li><strong>08:00</strong> Filosofía (Mad)</li>
+                    <li><strong>08:30</strong> Garífuna (Bas) / Redacción (Sec)</li>
+                    <li><strong>09:00</strong> Sociales (Bas) / Taqui (Sec)</li>
+                    <li><strong>09:30</strong> Admin (PA) / Redacción (4to)</li>
+                    <li><strong>11:00</strong> Sociales (Mad)</li>
+                    <li><strong>11:30</strong> Intro Eco (4to) / Sociología (Mad)</li>
+                    <li><strong>12:00</strong> Sociología (PA) / Admin Oficina (4to) / Estudios Soc (BC)</li>
+                    <li><strong>13:30</strong> Redacción (4to) / Taller (Sec)</li>
+                    <li><strong>14:00</strong> Intro Eco (PA)</li>
+                    <li><strong>14:30</strong> Estudios Soc (BC) / Taller Admin (PA)</li>
                 </ul>
             </div>
 
             <div class="doc-card" id="card-yara" style="border-left: 5px solid #ef6c00;">
                 <h3>Inga. Yara Guzmán</h3>
                 <ul>
-                    <li><strong>08:00</strong> Reparación (Bach Comp) / Mecanografía (Secre)</li>
-                    <li><strong>08:30</strong> Mantenimiento (Bach Comp) / Mercadotecnia (Perito Adm)</li>
-                    <li><strong>09:00</strong> Computación (Bach Comp)</li>
-                    <li><strong>10:30</strong> Inglés Comercial (4to/Perito/Secre) / Inglés I (Bach Comp)</li>
-                    <li><strong>11:00</strong> Computación (4to/Perito/Secre) / TICs (Bach Mad)</li>
-                    <li><strong>11:30</strong> TAC (Básico) / Inglés (L3) (Bach Mad)</li>
-                    <li><strong>12:00</strong> Inglés (Básico) / Computación (Perito Adm)</li>
-                    <li><strong>13:30</strong> Programación (Bach Comp) / Inglés Comercial (Perito Adm)</li>
-                    <li><strong>14:00</strong> Programación (4to Perito) / Inglés Avanzado (Secre)</li>
-                    <li><strong>15:00</strong> Lab. Programación (Bach Comp)</li>
+                    <li><strong>08:00</strong> Reparación (BC) / Mecano (Sec)</li>
+                    <li><strong>08:30</strong> Mant (BC) / Merca (PA)</li>
+                    <li><strong>09:00</strong> Computación (BC)</li>
+                    <li><strong>09:30</strong> Computación (BC)</li>
+                    <li><strong>10:30</strong> Inglés (Unificado Div)</li>
+                    <li><strong>11:00</strong> Compu (Unificado Div) / TICs (Mad)</li>
+                    <li><strong>11:30</strong> TAC (Bas) / Inglés (Mad)</li>
+                    <li><strong>12:00</strong> Inglés (Bas) / Computación (PA)</li>
+                    <li><strong>13:30</strong> Progra (BC) / Inglés Com (PA)</li>
+                    <li><strong>14:00</strong> Progra (4to) / Inglés Adv (Sec)</li>
+                    <li><strong>14:30</strong> Inglés Adv II (Sec)</li>
+                    <li><strong>15:00</strong> Lab Progra (BC)</li>
                 </ul>
             </div>
 
@@ -313,63 +327,78 @@
 
 <div id="login-modal">
     <div class="login-box">
-        <h3>🔐 Acceso Docentes</h3>
-        <input type="text" id="username" placeholder="Usuario">
+        <h3>🔐 Acceso Privado</h3>
+        <input type="text" id="username" placeholder="Usuario (Ej: yara)">
         <input type="password" id="password" placeholder="Contraseña">
         <button class="btn-submit" onclick="login()">Entrar</button>
-        <button style="margin-top:10px; background:none; border:none; color:#777; cursor:pointer" onclick="document.getElementById('login-modal').style.display='none'">Cancelar</button>
-        <p id="error-msg" style="color:red; display:none; margin-top:10px">Datos incorrectos</p>
+        <button class="btn-cancel" onclick="closeLogin()">Cancelar</button>
+        <p class="error-msg" id="login-error">Datos incorrectos</p>
     </div>
 </div>
 
 <script>
     const USERS = {
         'yara': { pass: 'admin2026', role: 'admin', name: 'Inga. Yara Guzmán' },
-        'karen': { pass: '1234', role: 'docente', name: 'Profa. Karen Supe' },
-        'adela': { pass: '1234', role: 'docente', name: 'Profa. Adela Jiménez' },
-        'claudia': { pass: '1234', role: 'docente', name: 'Profa. Claudia Catalán' }
+        'karen': { pass: '1234', role: 'teacher', name: 'Profa. Karen Supe' },
+        'adela': { pass: '1234', role: 'teacher', name: 'Profa. Adela Jiménez' },
+        'claudia': { pass: '1234', role: 'teacher', name: 'Profa. Claudia Catalán' }
     };
 
     let currentUser = null;
-    const STORAGE_KEY = 'horario_2026_final_v8';
+    const STORAGE_KEY = 'horario_2026_data_v9';
 
-    function openTab(id) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).style.display = 'block';
-        event.target.classList.add('active');
-    }
-
-    function showLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+    // --- LOGIN ---
+    function showLogin() { document.getElementById('login-modal').style.display = 'flex'; document.getElementById('username').focus(); }
+    function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
     
     function login() {
-        const u = document.getElementById('username').value.toLowerCase();
-        const p = document.getElementById('password').value;
+        const u = document.getElementById('username').value.toLowerCase().trim();
+        const p = document.getElementById('password').value.trim();
         if(USERS[u] && USERS[u].pass === p) {
             currentUser = {...USERS[u], id: u};
-            document.getElementById('login-modal').style.display = 'none';
-            document.querySelector('.btn-login').style.display = 'none';
-            document.querySelector('.btn-logout').style.display = 'block';
-            document.querySelector('.docente-only').style.display = 'block';
-            
-            if(currentUser.role === 'admin') {
-                document.getElementById('admin-panel').style.display = 'flex';
-                document.body.classList.add('is-admin');
-                toggleEditable(true);
-                document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'block');
-            } else {
-                document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'none');
-                document.getElementById('card-'+currentUser.id).style.display = 'block';
-                openTab('docentes'); 
-                document.querySelector('.docente-only').classList.add('active');
-            }
+            initSession();
+            closeLogin();
         } else {
-            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('login-error').style.display = 'block';
+        }
+    }
+
+    function initSession() {
+        document.querySelector('.btn-access').style.display = 'none';
+        document.querySelector('.btn-logout').style.display = 'block';
+        document.getElementById('user-label').innerText = `Usuario: ${currentUser.name}`;
+        document.querySelectorAll('.docente-only').forEach(e => e.style.display = 'block');
+
+        if(currentUser.role === 'admin') {
+            document.getElementById('admin-panel').style.display = 'flex';
+            document.body.classList.add('is-admin');
+            toggleEditable(true);
+            document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'block');
+        } else {
+            openTab(null, 'docentes');
+            document.querySelectorAll('.doc-card').forEach(c => c.style.display = 'none');
+            const card = document.getElementById('card-'+currentUser.id);
+            if(card) card.style.display = 'block';
         }
     }
 
     function logout() { location.reload(); }
 
+    // --- TABS ---
+    function openTab(evt, id) {
+        document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (evt) {
+            evt.currentTarget.classList.add('active');
+        } else {
+            // Find button if called programmatically
+            const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(id));
+            if(btn) btn.classList.add('active');
+        }
+    }
+
+    // --- EDICIÓN ---
     function toggleEditable(enable) {
         document.querySelectorAll('td:not(.hora)').forEach(td => {
             if(!td.parentElement.classList.contains('break') && !td.parentElement.classList.contains('lunch')) {
@@ -397,7 +426,7 @@
         if(!table) return;
         table.querySelectorAll('tr').forEach((tr, i) => {
             const cell = i===0 ? document.createElement('th') : tr.insertCell(-1);
-            cell.innerHTML = i===0 ? "Nueva" : "-";
+            cell.innerHTML = i===0 ? "Nueva Columna" : "-";
             if(i>0) cell.setAttribute('contenteditable', true);
             if(i===0) tr.appendChild(cell);
         });
@@ -408,14 +437,40 @@
         if(table && table.rows.length > 1) table.deleteRow(-1);
     }
 
+    // --- ESTILOS AUTOMÁTICOS ---
+    function autoHighlight() {
+        const mappings = {
+            'Karen': 'hl-karen', 'Adela': 'hl-adela', 'Claudia': 'hl-claudia', 'Yara': 'hl-yara'
+        };
+        
+        document.querySelectorAll('td').forEach(td => {
+            td.classList.remove('hl-karen', 'hl-adela', 'hl-claudia', 'hl-yara');
+            Object.keys(mappings).forEach(name => {
+                if(td.innerText.includes(name)) {
+                    td.classList.add(mappings[name]);
+                }
+            });
+        });
+    }
+
+    function applyColor(color) {
+        const selection = window.getSelection();
+        if(selection.anchorNode) {
+            let node = selection.anchorNode;
+            while(node && node.nodeName !== 'TD') node = node.parentNode;
+            if(node) node.style.backgroundColor = color;
+        }
+    }
+
+    // --- GUARDADO ---
     function saveChanges() {
         const data = {};
         document.querySelectorAll('table').forEach((t, i) => data['t'+i] = t.innerHTML);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        alert('Guardado.');
+        alert('Guardado en navegador.');
     }
 
-    function loadData() {
+    function loadChanges() {
         const data = localStorage.getItem(STORAGE_KEY);
         if(data) {
             const parsed = JSON.parse(data);
@@ -426,29 +481,42 @@
         autoHighlight();
     }
 
-    function autoHighlight() {
-        const map = { 'Karen': 'hl-karen', 'Adela': 'hl-adela', 'Claudia': 'hl-claudia', 'Yara': 'hl-yara' };
-        document.querySelectorAll('td').forEach(td => {
-            td.className = ''; 
-            Object.keys(map).forEach(k => { if(td.innerText.includes(k)) td.classList.add(map[k]); });
-        });
-    }
-
-    function applyColor() {
-        const color = document.getElementById('bg-color').value;
-        const sel = window.getSelection();
-        if(sel.anchorNode) {
-            let node = sel.anchorNode;
-            while(node && node.nodeName !== 'TD') node = node.parentNode;
-            if(node) node.style.backgroundColor = color;
+    function resetear() {
+        if(confirm('¿Borrar cambios?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
         }
     }
 
-    function resetear() { if(confirm('¿Restaurar?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+    function descargarHTML() {
+        const clone = document.documentElement.cloneNode(true);
+        clone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
+        const blob = new Blob([clone.outerHTML], {type: 'text/html'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Horario_2026.html';
+        a.click();
+    }
 
-    function printCurrent() { window.print(); }
+    // --- IMPRESIÓN ---
+    function printCurrent() {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('print-active', 'print-all'));
+        document.querySelector('.tab-content.active').classList.add('print-active');
+        window.print();
+    }
 
-    document.addEventListener('DOMContentLoaded', loadData);
+    function printAll() {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('print-all'));
+        window.print();
+        setTimeout(() => {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('print-all'));
+        }, 1000);
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', loadChanges);
+    document.getElementById('password').addEventListener('keypress', (e) => { if(e.key==='Enter') login() });
+
 </script>
 
 </body>
