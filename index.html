@@ -247,6 +247,23 @@
             color: #000;
         }
 
+        /* Estilo para clases múltiples */
+        .clase-multiple {
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .clase-item {
+            margin-bottom: 5px;
+            padding: 3px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .clase-item:last-child {
+            margin-bottom: 0;
+        }
+
         /* Tarjetas Docentes */
         .doc-grid {
             display: grid;
@@ -389,7 +406,7 @@
 </header>
 
 <div class="container">
-    <h1>Horario Oficial 2026</h1>
+    <h1>Horario Oficial 2026 - Clases Múltiples</h1>
 
     <div id="admin-panel">
         <div class="toolbar-group">
@@ -438,7 +455,10 @@
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td>Idioma Garífuna</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Idioma Garífuna (Aula 1)</div>
+                    <div class="clase-item">Ciencias Sociales (Aula 2)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr>
@@ -457,17 +477,27 @@
             </tr>
             <tr>
                 <td class="hora">10:30</td>
-                <td>Expresión Artística</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Expresión Artística</div>
+                    <div class="clase-item">Técnicas Investigación (Perito Adm)</div>
+                </td>
                 <td>Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
-                <td>Emprendimiento</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Emprendimiento</div>
+                    <div class="clase-item">Ciencias Naturales (Bach Mad)</div>
+                </td>
                 <td>Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">11:30</td>
-                <td>TAC (Tecnología)</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">TAC (Tecnología)</div>
+                    <div class="clase-item">Inglés L3 (Bach Mad)</div>
+                    <div class="clase-item">Mercadotecnia (Perito Adm)</div>
+                </td>
                 <td>Inga. Yara Guzmán</td>
             </tr>
             <tr>
@@ -481,7 +511,10 @@
             </tr>
             <tr>
                 <td class="hora">13:30</td>
-                <td>Ciencias Naturales</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Ciencias Naturales</div>
+                    <div class="clase-item">Com. y Lenguaje (Bach Mad)</div>
+                </td>
                 <td>Profa. Adela Jiménez</td>
             </tr>
             <tr>
@@ -518,7 +551,10 @@
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td>Ciencias Sociales</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Ciencias Sociales</div>
+                    <div class="clase-item">Idioma Garífuna (Básico - Aula 1)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr>
@@ -593,12 +629,18 @@
             </tr>
             <tr>
                 <td class="hora">08:00</td>
-                <td>Téc. Reparación</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Téc. Reparación (Lab 1)</div>
+                    <div class="clase-item">Mecanografía (Secretariado - Lab 2)</div>
+                </td>
                 <td>Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td>Téc. Mantenimiento</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Téc. Mantenimiento</div>
+                    <div class="clase-item">Mercadotecnia (Perito Adm)</div>
+                </td>
                 <td>Inga. Yara Guzmán</td>
             </tr>
             <tr>
@@ -617,7 +659,10 @@
             </tr>
             <tr>
                 <td class="hora">10:30</td>
-                <td>Inglés I (Unificado)</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Inglés I (Unificado)</div>
+                    <div class="clase-item">Inglés Comercial (4to/Perito/Secre)</div>
+                </td>
                 <td>Inga. Yara Guzmán</td>
             </tr>
             <tr>
@@ -673,12 +718,19 @@
             </tr>
             <tr>
                 <td class="hora">08:00</td>
-                <td>Matemáticas</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Matemáticas (Aula 3)</div>
+                    <div class="clase-item">Matemáticas (Perito Adm - Aula 4)</div>
+                </td>
                 <td>Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td>Contabilidad</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Contabilidad</div>
+                    <div class="clase-item">Contabilidad (Perito Adm)</div>
+                    <div class="clase-item">Contabilidad (Secretariado)</div>
+                </td>
                 <td>Profa. Karen Supe</td>
             </tr>
             <tr>
@@ -721,7 +773,11 @@
             </tr>
             <tr>
                 <td class="hora">13:30</td>
-                <td>Intro Economía</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Intro Economía</div>
+                    <div class="clase-item">Taller Redacción (Secretariado)</div>
+                    <div class="clase-item">Sociología (Perito Adm)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr>
@@ -768,7 +824,10 @@
             </tr>
             <tr>
                 <td class="hora">09:30</td>
-                <td>Administración I</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Administración I</div>
+                    <div class="clase-item">Redacción (Secretariado)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr class="break">
@@ -792,7 +851,10 @@
             </tr>
             <tr>
                 <td class="hora">12:00</td>
-                <td>Intro Economía</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Intro Economía</div>
+                    <div class="clase-item">Sociología (Bach Mad)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr class="lunch">
@@ -843,7 +905,10 @@
             </tr>
             <tr>
                 <td class="hora">09:00</td>
-                <td>Taquigrafía</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Taquigrafía</div>
+                    <div class="clase-item">Ciencias Sociales (Básico)</div>
+                </td>
                 <td>Profa. Claudia Catalán</td>
             </tr>
             <tr>
@@ -867,7 +932,10 @@
             </tr>
             <tr>
                 <td class="hora">11:30</td>
-                <td>Ortografía</td>
+                <td class="clase-multiple">
+                    <div class="clase-item">Ortografía</div>
+                    <div class="clase-item">Expresión Artística (Básico)</div>
+                </td>
                 <td>Profa. Adela Jiménez</td>
             </tr>
             <tr>
@@ -904,22 +972,22 @@
 
     <!-- PANEL DOCENTES -->
     <div id="docentes" class="tab-content">
-        <h2>Panel de Docentes (Privado)</h2>
+        <h2>Panel de Docentes (Privado) - Clases Múltiples</h2>
         <div class="doc-grid">
             <!-- KAREN -->
             <div class="doc-card" id="card-karen" style="border-left: 5px solid #e57373;">
                 <h3>Profa. Karen Supe</h3>
                 <ul>
-                    <li><strong>08:00</strong> Mate 4to</li>
-                    <li><strong>08:30</strong> Conta 4to / Conta PA / Conta Sec (unificado)</li>
-                    <li><strong>09:00</strong> Mate BC / Estad PA / Mate I (Comp) (unificado numérico)</li>
+                    <li><strong>08:00</strong> Mate 4to (Aula 3) / Mate PA (Aula 4)</li>
+                    <li><strong>08:30</strong> Conta 4to / Conta PA / Conta Sec (unificado triple)</li>
+                    <li><strong>09:00</strong> Mate BC / Estad PA (bloque matemático)</li>
                     <li><strong>09:30</strong> Mate Bas</li>
                     <li><strong>10:30</strong> Mate Mad</li>
                     <li><strong>11:00</strong> Física I (Comp)</li>
-                    <li><strong>11:30</strong> Conta BC / Conta I (Comp) (unificado)</li>
+                    <li><strong>11:30</strong> Conta BC / Conta I (Comp)</li>
                     <li><strong>12:00</strong> Matemática Com. Sec</li>
                     <li><strong>14:00</strong> Mate I Lab (Comp)</li>
-                    <li><strong>14:30</strong> Estad BC / Estad I (Comp) (bloque estadística)</li>
+                    <li><strong>14:30</strong> Estad BC / Estad I (Comp)</li>
                     <li><strong>15:00</strong> Libre</li>
                 </ul>
             </div>
@@ -932,11 +1000,11 @@
                     <li><strong>08:30</strong> CN Mad</li>
                     <li><strong>09:00</strong> Derecho 4to</li>
                     <li><strong>09:30</strong> Psico Mad</li>
-                    <li><strong>10:30</strong> Exp Art Bas</li>
-                    <li><strong>11:00</strong> Emp Bas</li>
+                    <li><strong>10:30</strong> Exp Art Bas / Téc Inv PA (bloque creativo)</li>
+                    <li><strong>11:00</strong> Emp Bas / CN Mad (bloque ciencias)</li>
                     <li><strong>11:30</strong> Exp Art Bas / Ort Sec (bloque humanidades)</li>
                     <li><strong>12:00</strong> Ort 4to</li>
-                    <li><strong>13:30</strong> CN Bas / CL Mad (no unificado con Básico en aula)</li>
+                    <li><strong>13:30</strong> CN Bas / CL Mad (bloque comunicación)</li>
                     <li><strong>14:00</strong> Tc Inv PA</li>
                     <li><strong>14:30</strong> Exp Art Mad</li>
                     <li><strong>15:00</strong> CL BC</li>
@@ -948,13 +1016,13 @@
                 <h3>Profa. Claudia Catalán</h3>
                 <ul>
                     <li><strong>08:00</strong> Filo Mad</li>
-                    <li><strong>08:30</strong> Garífuna Bas / Soc Mad (separadas en aula, mismo bloque)</li>
-                    <li><strong>09:00</strong> Soc Bas</li>
-                    <li><strong>09:30</strong> Admin PA / Red Sec (bloque admin–redacción)</li>
+                    <li><strong>08:30</strong> Garífuna Bas (Aula 1) / Soc Mad (Aula 2)</li>
+                    <li><strong>09:00</strong> Soc Bas / Taqui Sec (bloque social)</li>
+                    <li><strong>09:30</strong> Admin PA / Red Sec (bloque admin-redacción)</li>
                     <li><strong>10:30</strong> Soc Bas / Est Soc BC (bloque social)</li>
                     <li><strong>11:30</strong> Admin Of 4to</li>
                     <li><strong>12:00</strong> Soc Mad / Intro Eco PA (bloque socioeconómico)</li>
-                    <li><strong>13:30</strong> Intro Eco 4to / Taller Sec / Soc PA (bloque taller–eco–sociedad)</li>
+                    <li><strong>13:30</strong> Intro Eco 4to / Taller Sec / Soc PA (triple bloque)</li>
                     <li><strong>14:30</strong> Taller Admin PA</li>
                     <li><strong>15:00</strong> Libre</li>
                 </ul>
@@ -964,13 +1032,13 @@
             <div class="doc-card" id="card-yara" style="border-left: 5px solid #ffb74d;">
                 <h3>Inga. Yara Guzmán</h3>
                 <ul>
-                    <li><strong>08:00</strong> Rep BC / Mecano Sec</li>
-                    <li><strong>08:30</strong> Mant BC / Merca PA</li>
+                    <li><strong>08:00</strong> Rep BC (Lab 1) / Mecano Sec (Lab 2)</li>
+                    <li><strong>08:30</strong> Mant BC / Merca PA (bloque técnico)</li>
                     <li><strong>09:00</strong> Tec Mant BC</li>
                     <li><strong>09:30</strong> Comp BC</li>
-                    <li><strong>10:30</strong> Ing BC/4to/PA/Sec (unificado)</li>
-                    <li><strong>11:00</strong> Comp 4to/PA/Sec (unificado)</li>
-                    <li><strong>11:30</strong> TAC Bas / Ing Mad / Merca PA (bloque TIC–Inglés–Merca)</li>
+                    <li><strong>10:30</strong> Ing BC/4to/PA/Sec (unificado cuádruple)</li>
+                    <li><strong>11:00</strong> Comp 4to/PA/Sec (unificado triple) / TICs Mad</li>
+                    <li><strong>11:30</strong> TAC Bas / Ing Mad / Merca PA (triple bloque)</li>
                     <li><strong>12:00</strong> Ing Bas</li>
                     <li><strong>13:30</strong> Progra BC</li>
                     <li><strong>14:00</strong> Progra 4to / Ing Adv Sec</li>
