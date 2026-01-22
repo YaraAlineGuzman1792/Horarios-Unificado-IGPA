@@ -208,10 +208,18 @@
             background: #eee;
         }
 
-        .materia {
-            font-weight: 700;
-            display: block;
-            font-size: 0.95rem;
+        .break {
+            background: #fff3cd;
+            text-align: center;
+            font-weight: bold;
+            color: #f57f17;
+        }
+
+        .lunch {
+            background: #d4edda;
+            text-align: center;
+            font-weight: bold;
+            color: #1b5e20;
         }
 
         /* Estilos Automáticos para Maestras */
@@ -237,20 +245,6 @@
             border-left: 4px solid var(--yara-text);
             background-color: var(--yara);
             color: #000;
-        }
-
-        .break {
-            background: #fff3cd;
-            text-align: center;
-            font-weight: bold;
-            color: #f57f17;
-        }
-
-        .lunch {
-            background: #d4edda;
-            text-align: center;
-            font-weight: bold;
-            color: #1b5e20;
         }
 
         /* Tarjetas Docentes */
@@ -912,55 +906,61 @@
     <div id="docentes" class="tab-content">
         <h2>Panel de Docentes (Privado)</h2>
         <div class="doc-grid">
+            <!-- KAREN -->
             <div class="doc-card" id="card-karen" style="border-left: 5px solid #e57373;">
                 <h3>Profa. Karen Supe</h3>
                 <ul>
-                    <li><strong>08:00</strong> Mate 4to / Mate PA / Mate Bas</li>
-                    <li><strong>08:30</strong> Conta 4to / Conta PA / Conta Sec</li>
-                    <li><strong>09:00</strong> Mate BC / Estad PA / Mate I (Comp)</li>
-                    <li><strong>09:30</strong> Mate Bas / Mate Mad</li>
-                    <li><strong>10:30</strong> Mate Mad (Bach Mad)</li>
-                    <li><strong>11:00</strong> Física BC</li>
-                    <li><strong>11:30</strong> Conta BC / Conta I (Comp)</li>
+                    <li><strong>08:00</strong> Mate 4to</li>
+                    <li><strong>08:30</strong> Conta 4to / Conta PA / Conta Sec (unificado)</li>
+                    <li><strong>09:00</strong> Mate BC / Estad PA / Mate I (Comp) (unificado numérico)</li>
+                    <li><strong>09:30</strong> Mate Bas</li>
+                    <li><strong>10:30</strong> Mate Mad</li>
+                    <li><strong>11:00</strong> Física I (Comp)</li>
+                    <li><strong>11:30</strong> Conta BC / Conta I (Comp) (unificado)</li>
                     <li><strong>12:00</strong> Matemática Com. Sec</li>
-                    <li><strong>14:00</strong> Mate BC / Mate I Lab (Comp)</li>
-                    <li><strong>14:30</strong> Estad BC / Estad I (Comp)</li>
+                    <li><strong>14:00</strong> Mate I Lab (Comp)</li>
+                    <li><strong>14:30</strong> Estad BC / Estad I (Comp) (bloque estadística)</li>
+                    <li><strong>15:00</strong> Libre</li>
                 </ul>
             </div>
 
+            <!-- ADELA -->
             <div class="doc-card" id="card-adela" style="border-left: 5px solid #ba68c8;">
                 <h3>Profa. Adela Jiménez</h3>
                 <ul>
                     <li><strong>08:00</strong> Com. Leng Bas</li>
-                    <li><strong>08:30</strong> CCNN Mad</li>
-                    <li><strong>09:00</strong> Derecho 4to / CN Mad</li>
+                    <li><strong>08:30</strong> CN Mad</li>
+                    <li><strong>09:00</strong> Derecho 4to</li>
                     <li><strong>09:30</strong> Psico Mad</li>
                     <li><strong>10:30</strong> Exp Art Bas</li>
-                    <li><strong>11:00</strong> Emp Bas / CN Mad</li>
-                    <li><strong>11:30</strong> Exp Art Bas / Ort Sec</li>
+                    <li><strong>11:00</strong> Emp Bas</li>
+                    <li><strong>11:30</strong> Exp Art Bas / Ort Sec (bloque humanidades)</li>
                     <li><strong>12:00</strong> Ort 4to</li>
-                    <li><strong>13:30</strong> CN Bas / CL Mad</li>
+                    <li><strong>13:30</strong> CN Bas / CL Mad (no unificado con Básico en aula)</li>
                     <li><strong>14:00</strong> Tc Inv PA</li>
                     <li><strong>14:30</strong> Exp Art Mad</li>
                     <li><strong>15:00</strong> CL BC</li>
                 </ul>
             </div>
 
+            <!-- CLAUDIA -->
             <div class="doc-card" id="card-claudia" style="border-left: 5px solid #4db6ac;">
                 <h3>Profa. Claudia Catalán</h3>
                 <ul>
-                    <li><strong>08:00</strong> Filo Mad / Red 4to</li>
-                    <li><strong>08:30</strong> Garífuna Bas / Soc Mad</li>
-                    <li><strong>09:00</strong> Soc Bas / Taqui Sec</li>
-                    <li><strong>09:30</strong> Admin PA / Red Sec</li>
-                    <li><strong>10:30</strong> Soc Bas</li>
-                    <li><strong>11:30</strong> Admin Of 4to / Est Soc BC</li>
-                    <li><strong>12:00</strong> Soc Mad / Intro Eco PA</li>
-                    <li><strong>13:30</strong> Intro Eco 4to / Taller Sec / Soc PA</li>
+                    <li><strong>08:00</strong> Filo Mad</li>
+                    <li><strong>08:30</strong> Garífuna Bas / Soc Mad (separadas en aula, mismo bloque)</li>
+                    <li><strong>09:00</strong> Soc Bas</li>
+                    <li><strong>09:30</strong> Admin PA / Red Sec (bloque admin–redacción)</li>
+                    <li><strong>10:30</strong> Soc Bas / Est Soc BC (bloque social)</li>
+                    <li><strong>11:30</strong> Admin Of 4to</li>
+                    <li><strong>12:00</strong> Soc Mad / Intro Eco PA (bloque socioeconómico)</li>
+                    <li><strong>13:30</strong> Intro Eco 4to / Taller Sec / Soc PA (bloque taller–eco–sociedad)</li>
                     <li><strong>14:30</strong> Taller Admin PA</li>
+                    <li><strong>15:00</strong> Libre</li>
                 </ul>
             </div>
 
+            <!-- YARA -->
             <div class="doc-card" id="card-yara" style="border-left: 5px solid #ffb74d;">
                 <h3>Inga. Yara Guzmán</h3>
                 <ul>
@@ -968,9 +968,9 @@
                     <li><strong>08:30</strong> Mant BC / Merca PA</li>
                     <li><strong>09:00</strong> Tec Mant BC</li>
                     <li><strong>09:30</strong> Comp BC</li>
-                    <li><strong>10:30</strong> Ing BC/4to/PA/Sec Unificado</li>
-                    <li><strong>11:00</strong> Comp 4to/PA/Sec Unificado / TICs Mad</li>
-                    <li><strong>11:30</strong> TAC Bas / Ing Mad / Merca PA</li>
+                    <li><strong>10:30</strong> Ing BC/4to/PA/Sec (unificado)</li>
+                    <li><strong>11:00</strong> Comp 4to/PA/Sec (unificado)</li>
+                    <li><strong>11:30</strong> TAC Bas / Ing Mad / Merca PA (bloque TIC–Inglés–Merca)</li>
                     <li><strong>12:00</strong> Ing Bas</li>
                     <li><strong>13:30</strong> Progra BC</li>
                     <li><strong>14:00</strong> Progra 4to / Ing Adv Sec</li>
@@ -1005,7 +1005,6 @@
     let currentUser = null;
     const STORAGE_KEY = "horario2026_data_v5";
 
-    /* --- LOGIN --- */
     function showLogin() {
         document.getElementById("login-modal").style.display = "flex";
         document.getElementById("username").focus();
@@ -1045,7 +1044,6 @@
         location.reload();
     }
 
-    /* --- TABS --- */
     function openTab(id) {
         document.querySelectorAll(".tab-content").forEach(e => e.classList.remove("active"));
         document.querySelectorAll(".tab-btn").forEach(e => e.classList.remove("active"));
@@ -1055,7 +1053,6 @@
         if (btn) btn.classList.add("active");
     }
 
-    /* --- EDICIÓN --- */
     function enableEditing(enable) {
         document.querySelectorAll("td:not(.hora)").forEach(td => {
             if (!td.parentElement.classList.contains("break") && !td.parentElement.classList.contains("lunch")) {
@@ -1098,7 +1095,6 @@
         }
     }
 
-    /* --- ESTILOS AUTOMÁTICOS --- */
     function autoHighlight() {
         const mappings = {
             "Karen": "hl-karen",
@@ -1128,7 +1124,6 @@
         }
     }
 
-    /* --- GUARDADO --- */
     function saveChanges() {
         const data = [];
         document.querySelectorAll("table").forEach((t, i) => {
@@ -1158,7 +1153,6 @@
         }
     }
 
-    /* --- IMPRESIÓN --- */
     function printCurrent() {
         document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("print-active", "print-all"));
         document.querySelector(".tab-content.active").classList.add("print-active");
@@ -1173,7 +1167,6 @@
         }, 1000);
     }
 
-    /* Init */
     document.addEventListener("DOMContentLoaded", loadChanges);
     document.getElementById("password").addEventListener("keypress", e => {
         if (e.key === "Enter") login();
