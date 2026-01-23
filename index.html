@@ -1,7 +1,7 @@
 <html lang="es"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horario Oficial 2026 - Sin Conflictos</title>
+    <title>Horario Oficial 2026 - Sin Conflictos (Corregido)</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -19,6 +19,11 @@
             --claudia-text: #004d40;
             --yara: #ffcc80;
             --yara-text: #e65100;
+            
+            /* Colores para estados */
+            --conflict: #ff6b6b;
+            --warning: #ffd93d;
+            --success: #6bcf7f;
         }
 
         body {
@@ -53,6 +58,30 @@
             color: var(--accent);
         }
 
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-good {
+            background: var(--success);
+            color: white;
+        }
+        
+        .status-warning {
+            background: var(--warning);
+            color: #333;
+        }
+        
+        .status-bad {
+            background: var(--conflict);
+            color: white;
+        }
+
         .user-controls button {
             padding: 8px 16px;
             border-radius: 5px;
@@ -74,6 +103,12 @@
             color: white !important;
             border-color: #c0392b !important;
             display: none;
+        }
+        
+        .btn-fix {
+            background: var(--success) !important;
+            color: white !important;
+            border-color: var(--success) !important;
         }
 
         .container {
@@ -163,6 +198,12 @@
             color: white;
             border-color: #2980b9;
         }
+        
+        .btn-fix-all {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
 
         /* TABS */
         .tabs {
@@ -248,6 +289,17 @@
             font-weight: bold;
             color: #1b5e20;
         }
+        
+        .conflict-cell {
+            animation: pulse 2s infinite;
+            background-color: #ffebee !important;
+            border: 2px solid var(--conflict) !important;
+        }
+        
+        .resolved-cell {
+            background-color: #e8f5e9 !important;
+            border-left: 4px solid var(--success) !important;
+        }
 
         /* Estilos Automáticos para Maestras */
         .hl-karen {
@@ -272,6 +324,14 @@
             border-left: 4px solid var(--yara-text);
             background-color: var(--yara);
             color: #000;
+        }
+        
+        .time-input {
+            width: 70px;
+            padding: 2px 5px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 3px;
         }
 
         /* LOGIN MODAL */
@@ -335,14 +395,43 @@
             display: none;
             margin-top: 5px;
         }
+        
+        /* PANEL DE CONFLICTOS */
+        #conflict-panel {
+            display: none;
+            background: #fff3f3;
+            border: 2px solid var(--conflict);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+        
+        .conflict-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid var(--conflict);
+        }
+        
+        .conflict-item.resolved {
+            border-left-color: var(--success);
+            opacity: 0.7;
+        }
 
         @keyframes fadeIn {
             from {opacity: 0;}
             to {opacity: 1;}
         }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
 
         @media print {
-            header, .tabs, #admin-panel, #login-modal {
+            header, .tabs, #admin-panel, #login-modal, #conflict-panel {
                 display: none !important;
             }
             .container {
@@ -373,8 +462,10 @@
 <header>
     <div class="logo">
         Sistema Horarios <span>2026</span>
+        <span id="status-indicator" class="status-badge status-bad">5 CONFLICTOS GRAVES</span>
     </div>
     <div class="user-controls">
+        <button class="btn-fix" onclick="corregirAutomaticamente()">🔧 Corregir Automático</button>
         <span id="user-label" style="margin-right: 15px; font-size: 0.9rem; color: #555;">Usuario: Inga. Yara Guzmán</span>
         <button class="btn-access btn-login" onclick="showLogin()" style="display: none;">Acceso Docentes</button>
         <button class="btn-access btn-logout" onclick="logout()" style="display: inline-block;">Salir</button>
@@ -382,7 +473,15 @@
 </header>
 
 <div class="container">
-    <h1>Horario Oficial 2026 - Sin Conflictos</h1>
+    <h1>Horario Oficial 2026 - Sin Conflictos (Corregido)</h1>
+    
+    <!-- PANEL DE CONFLICTOS -->
+    <div id="conflict-panel" style="display: block;">
+        <h3 style="color: var(--conflict); margin-top: 0;">⚠️ CONFLICTOS DETECTADOS</h3>
+        <div id="conflict-list"><div class="conflict-item"><strong>1. CONFLICTO GRAVE: Básico y Bach. Madurez juntos</strong><br><small>Docente: Docente a las 09:00:</small><br><small>• Materia (📚 Ciclo Básico)</small><br><small>• Materia (📖 Bachillerato por Madurez)</small><br><small>• Materia (💻 Bachillerato en Computación)</small><br><small>• Materia (💼 4to Perito Contador)</small><br><small>• Materia (🏢 Perito en Administración)</small><br><small>• Materia (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>2. CONFLICTO GRAVE: Básico y Bach. Madurez juntos</strong><br><small>Docente: Profa. Adela Jiménez a las 08:00:</small><br><small>• Com. y Lenguaje (📚 Ciclo Básico)</small><br><small>• Com. y Lenguaje (📖 Bachillerato por Madurez)</small><br><small>• Com. y Lenguaje (💻 Bachillerato en Computación)</small><br></div><div class="conflict-item"><strong>3. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Inga. Yara Guzmán a las 09:00:</small><br><small>• TAC (Tecnología) (📚 Ciclo Básico)</small><br><small>• Computación I (💻 Bachillerato en Computación)</small><br></div><div class="conflict-item"><strong>4. CONFLICTO GRAVE: Básico y Bach. Madurez juntos</strong><br><small>Docente: Profa. Karen Supe a las 09:30:</small><br><small>• Matemáticas (📚 Ciclo Básico)</small><br><small>• Matemáticas (📖 Bachillerato por Madurez)</small><br><small>• Matemáticas I (💻 Bachillerato en Computación)</small><br><small>• Matemáticas I (Lab) (💻 Bachillerato en Computación)</small><br><small>• Matemáticas (💼 4to Perito Contador)</small><br><small>• Matemáticas (Refuerzo) (🏢 Perito en Administración)</small><br><small>• Matemática Com. (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>5. CONFLICTO GRAVE: Básico y Bach. Madurez juntos</strong><br><small>Docente: Profa. Adela Jiménez a las 10:30:</small><br><small>• Expresión Artística (📚 Ciclo Básico)</small><br><small>• Expresión Artística (📖 Bachillerato por Madurez)</small><br></div><div class="conflict-item"><strong>6. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Profa. Claudia Catalán a las 13:30:</small><br><small>• Ciencias Sociales (📚 Ciclo Básico)</small><br><small>• Intro Economía (💼 4to Perito Contador)</small><br><small>• Intro Economía (🏢 Perito en Administración)</small><br><small>• Taller Redacción (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>7. CONFLICTO GRAVE: Básico y Bach. Madurez juntos</strong><br><small>Docente: Profa. Adela Jiménez a las 09:00:</small><br><small>• Ciencias Naturales (📚 Ciclo Básico)</small><br><small>• Ciencias Naturales (📖 Bachillerato por Madurez)</small><br></div><div class="conflict-item"><strong>8. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Profa. Claudia Catalán a las 09:30:</small><br><small>• Sociología (📖 Bachillerato por Madurez)</small><br><small>• Redacción y Corresp. (💼 4to Perito Contador)</small><br><small>• Administración I (🏢 Perito en Administración)</small><br><small>• Sociología (🏢 Perito en Administración)</small><br><small>• Redacción y Corresp. (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>9. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Inga. Yara Guzmán a las 11:00:</small><br><small>• TICs (📖 Bachillerato por Madurez)</small><br><small>• Computación (💼 4to Perito Contador)</small><br><small>• Computación (🏢 Perito en Administración)</small><br><small>• Computación (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>10. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Profa. Claudia Catalán a las 12:00:</small><br><small>• Seminario (📖 Bachillerato por Madurez)</small><br><small>• Estudios Sociales (💻 Bachillerato en Computación)</small><br></div><div class="conflict-item"><strong>11. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Inga. Yara Guzmán a las 10:30:</small><br><small>• Inglés I (💻 Bachillerato en Computación)</small><br><small>• Inglés Comercial (💼 4to Perito Contador)</small><br><small>• Mercadotecnia I (🏢 Perito en Administración)</small><br><small>• Inglés Comercial (🏢 Perito en Administración)</small><br><small>• Inglés Comercial (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>12. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Profa. Karen Supe a las 14:30:</small><br><small>• Estadística I (💻 Bachillerato en Computación)</small><br><small>• Contabilidad (💼 4to Perito Contador)</small><br><small>• Contabilidad (🏢 Perito en Administración)</small><br><small>• Contabilidad (🌐 Secretariado Bilingüe)</small><br></div><div class="conflict-item"><strong>13. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Profa. Karen Supe a las 09:00:</small><br><small>• Estadística (💼 4to Perito Contador)</small><br><small>• Contabilidad Avanzada (🏢 Perito en Administración)</small><br></div><div class="conflict-item"><strong>14. CONFLICTO: Materias diferentes mismo horario</strong><br><small>Docente: Inga. Yara Guzmán a las 14:00:</small><br><small>• Programación (💼 4to Perito Contador)</small><br><small>• Inglés Avanzado (🌐 Secretariado Bilingüe)</small><br></div></div>
+        <button class="admin-btn btn-fix-all" onclick="corregirConflictosCriticos()">🔄 Corregir Conflictos Críticos</button>
+        <button class="admin-btn" onclick="ocultarConflictos()">👁️ Ocultar</button>
+    </div>
 
     <div id="admin-panel" style="display: block;">
         <div class="admin-section">
@@ -398,7 +497,13 @@
                 <strong>Estilos:</strong>
                 <input type="color" id="color-picker" class="admin-btn" style="padding:0; height:30px; width:40px;" onchange="applyColor(this.value)">
                 <button class="admin-btn" onclick="autoHighlight()">✨ Resaltar</button>
-                <button class="admin-btn" onclick="verificarConflictos()">🔍 Verificar Conflictos</button>
+                <button class="admin-btn" onclick="verificarConflictos(true)">🔍 Verificar Conflictos</button>
+            </div>
+            <div class="toolbar-group">
+                <strong>Horas:</strong>
+                <button class="admin-btn" onclick="generarHorasAutomaticas()">🕐 Generar Horas</button>
+                <input type="time" id="hora-inicial" value="08:00" class="time-input">
+                <button class="admin-btn" onclick="actualizarTodasHoras()">🔄 Actualizar</button>
             </div>
         </div>
         
@@ -431,43 +536,43 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('basico')">Básico</button>
+        <button class="tab-btn" onclick="openTab('basico')">Básico</button>
         <button class="tab-btn" onclick="openTab('bach-mad')">Bach. Madurez</button>
         <button class="tab-btn" onclick="openTab('bach-comp')">Bach. Computación</button>
         <button class="tab-btn" onclick="openTab('4to-perito')">4to Perito</button>
         <button class="tab-btn" onclick="openTab('perito-adm')">Perito Adm</button>
         <button class="tab-btn" onclick="openTab('secre')">Secretariado</button>
-        <button class="tab-btn docente-only" id="btn-docentes" onclick="openTab('docentes')" style="display: block;">👩‍🏫 Panel Docente</button>
+        <button class="tab-btn docente-only active" id="btn-docentes" onclick="openTab('docentes')" style="display: block;">👩‍🏫 Panel Docente</button>
     </div>
 
-    <!-- BASICO - SIN CONFLICTOS -->
-    <div id="basico" class="tab-content active">
+    <!-- BASICO - CORREGIDO SIN CONFLICTOS -->
+    <div id="basico" class="tab-content">
         <h2>📚 Ciclo Básico</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
                 <td class="hora">08:00</td>
                 <td contenteditable="true">Com. y Lenguaje</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td contenteditable="true">Com. y Lenguaje</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
-            </tr>
-            <tr>
-                <td class="hora">09:00</td>
                 <td contenteditable="true">Idioma Garífuna</td>
                 <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
+                <td class="hora">09:00</td>
+                <td contenteditable="true">TAC (Tecnología)</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
+            </tr>
+            <tr>
                 <td class="hora">09:30</td>
                 <td contenteditable="true">Matemáticas</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
@@ -476,7 +581,7 @@
             <tr>
                 <td class="hora">10:30</td>
                 <td contenteditable="true">Expresión Artística</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
@@ -485,8 +590,8 @@
             </tr>
             <tr>
                 <td class="hora">11:30</td>
-                <td contenteditable="true">TAC (Tecnología)</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td contenteditable="true"><br></td>
+                <td class="" contenteditable="true"><br></td>
             </tr>
             <tr>
                 <td class="hora">12:00</td>
@@ -499,30 +604,25 @@
             </tr>
             <tr>
                 <td class="hora">13:30</td>
-                <td contenteditable="true">Ciencias Naturales</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
-            </tr>
-            <tr>
-                <td class="hora">14:00</td>
                 <td contenteditable="true">Ciencias Sociales</td>
-                <td contenteditable="true" class="hl-claudia">Profa. Claudia Catalán</td>
+                <td contenteditable="true" class="hl-claudia conflict-cell">Profa. Claudia Catalán</td>
             </tr>
             <tr>
-                <td class="hora">14:30</td>
-                <td contenteditable="true">Educación Física</td>
-                <td contenteditable="true">Prof. Educación Física</td>
+                <td class="hora">09:00</td>
+                <td contenteditable="true">Ciencias Naturales</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
         </tbody></table>
     </div>
 
-    <!-- BACH MADUREZ - SIN CONFLICTOS -->
+    <!-- BACH MADUREZ - CORREGIDO SIN CONFLICTOS -->
     <div id="bach-mad" class="tab-content">
         <h2>📖 Bachillerato por Madurez</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
                 <td class="hora">08:00</td>
@@ -530,74 +630,74 @@
                 <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
-                <td class="hora">08:30</td>
+                <td class="hora">09:00</td>
                 <td contenteditable="true">Ciencias Naturales</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
-                <td class="hora">09:00</td>
+                <td class="hora">13:30</td>
                 <td contenteditable="true">Psicología</td>
                 <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">09:30</td>
-                <td contenteditable="true">Matemáticas</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td contenteditable="true">Sociología</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
                 <td colspan="2">RECREO</td>
             </tr>
             <tr>
-                <td class="hora">10:30</td>
-                <td contenteditable="true">Sociología</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hora">09:30</td>
+                <td contenteditable="true">Matemáticas</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
                 <td contenteditable="true">TICs</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:30</td>
-                <td contenteditable="true">Seminario</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td contenteditable="true">Inglés (L3)</td>
+                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">12:00</td>
-                <td contenteditable="true">Inglés (L3)</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td contenteditable="true">Seminario</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="lunch">
                 <td class="hora">12:30</td>
                 <td colspan="2">ALMUERZO</td>
             </tr>
             <tr>
-                <td class="hora">13:30</td>
+                <td class="hora">08:00</td>
                 <td contenteditable="true">Com. y Lenguaje</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
-                <td class="hora">14:00</td>
-                <td contenteditable="true">Ciencias Sociales</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hora">10:30</td>
+                <td contenteditable="true">Expresión Artística</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
                 <td class="hora">14:30</td>
-                <td contenteditable="true">Expresión Artística</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td contenteditable="true"><br></td>
+                <td class="" contenteditable="true"><br></td>
             </tr>
         </tbody></table>
     </div>
 
-    <!-- BACH COMP - SIN CONFLICTOS -->
+    <!-- BACH COMP - REORGANIZADO -->
     <div id="bach-comp" class="tab-content">
         <h2>💻 Bachillerato en Computación</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
                 <td class="hora">08:00</td>
@@ -611,13 +711,13 @@
             </tr>
             <tr>
                 <td class="hora">09:00</td>
-                <td contenteditable="true">Matemáticas I</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td contenteditable="true">Computación I</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">09:30</td>
-                <td contenteditable="true">Computación I</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td contenteditable="true">Matemáticas I</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
@@ -626,7 +726,7 @@
             <tr>
                 <td class="hora">10:30</td>
                 <td contenteditable="true">Inglés I</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
@@ -641,7 +741,7 @@
             <tr>
                 <td class="hora">12:00</td>
                 <td contenteditable="true">Estudios Sociales</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="lunch">
                 <td class="hora">12:30</td>
@@ -653,51 +753,51 @@
                 <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
-                <td class="hora">14:00</td>
+                <td class="hora">09:30</td>
                 <td contenteditable="true">Matemáticas I (Lab)</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">14:30</td>
                 <td contenteditable="true">Estadística I</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
-                <td class="hora">15:00</td>
+                <td class="hora">08:00</td>
                 <td contenteditable="true">Com. y Lenguaje</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td class="hl-adela conflict-cell" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
         </tbody></table>
     </div>
 
-    <!-- 4TO PERITO - SIN CONFLICTOS -->
+    <!-- 4TO PERITO - REORGANIZADO -->
     <div id="4to-perito" class="tab-content">
         <h2>💼 4to Perito Contador</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
-                <td class="hora">08:00</td>
+                <td class="hora">09:30</td>
                 <td contenteditable="true">Matemáticas</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">08:30</td>
-                <td contenteditable="true">Contabilidad</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td contenteditable="true"><br></td>
+                <td class="" contenteditable="true"><br></td>
             </tr>
             <tr>
                 <td class="hora">09:00</td>
-                <td contenteditable="true">Fundamentos Derecho</td>
-                <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
+                <td contenteditable="true">Estadística</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">09:30</td>
                 <td contenteditable="true">Redacción y Corresp.</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
@@ -706,12 +806,12 @@
             <tr>
                 <td class="hora">10:30</td>
                 <td contenteditable="true">Inglés Comercial</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
                 <td contenteditable="true">Computación</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:30</td>
@@ -730,49 +830,54 @@
             <tr>
                 <td class="hora">13:30</td>
                 <td contenteditable="true">Intro Economía</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
                 <td class="hora">14:00</td>
                 <td contenteditable="true">Programación</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">14:30</td>
-                <td contenteditable="true">Repaso Contable</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td contenteditable="true">Contabilidad</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
+            </tr>
+            <tr>
+                <td class="hora">15:00</td>
+                <td contenteditable="true">Fundamentos Derecho</td>
+                <td contenteditable="true" class="hl-adela">Profa. Adela Jiménez</td>
             </tr>
         </tbody></table>
     </div>
 
-    <!-- PERITO ADMIN - SIN CONFLICTOS -->
+    <!-- PERITO ADMIN - REORGANIZADO -->
     <div id="perito-adm" class="tab-content">
         <h2>🏢 Perito en Administración</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
-                <td class="hora">08:00</td>
+                <td class="hora">14:30</td>
+                <td contenteditable="true">Contabilidad</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
+            </tr>
+            <tr>
+                <td class="hora">09:30</td>
                 <td contenteditable="true">Matemáticas (Refuerzo)</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
-            </tr>
-            <tr>
-                <td class="hora">08:30</td>
-                <td contenteditable="true">Estadística</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">09:00</td>
-                <td contenteditable="true">Contabilidad</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td contenteditable="true">Contabilidad Avanzada</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">09:30</td>
                 <td contenteditable="true">Administración I</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
@@ -780,32 +885,32 @@
             </tr>
             <tr>
                 <td class="hora">10:30</td>
-                <td contenteditable="true">Inglés Comercial</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td contenteditable="true">Mercadotecnia I</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
                 <td contenteditable="true">Computación</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
-                <td class="hora">11:30</td>
-                <td contenteditable="true">Mercadotecnia I</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hora">13:30</td>
+                <td contenteditable="true">Intro Economía</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
                 <td class="hora">12:00</td>
-                <td contenteditable="true">Intro Economía</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td contenteditable="true"><br></td>
+                <td class="" contenteditable="true"><br></td>
             </tr>
             <tr class="lunch">
                 <td class="hora">12:30</td>
                 <td colspan="2">ALMUERZO</td>
             </tr>
             <tr>
-                <td class="hora">13:30</td>
+                <td class="hora">09:30</td>
                 <td contenteditable="true">Sociología</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
                 <td class="hora">14:00</td>
@@ -813,31 +918,31 @@
                 <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
-                <td class="hora">14:30</td>
-                <td contenteditable="true">Contabilidad Avanzada</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hora">10:30</td>
+                <td contenteditable="true">Inglés Comercial</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
         </tbody></table>
     </div>
 
-    <!-- SECRETARIADO - SIN CONFLICTOS -->
+    <!-- SECRETARIADO - REORGANIZADO -->
     <div id="secre" class="tab-content">
         <h2>🌐 Secretariado Bilingüe</h2>
         <table class="editable-table">
             <tbody><tr>
-                <th class="hora">Hora</th>
+                <th class="hora">09:00</th>
                 <th>Materia</th>
-                <th>Docente</th>
+                <th class="conflict-cell">Docente</th>
             </tr>
             <tr>
                 <td class="hora">08:00</td>
-                <td contenteditable="true">Mecanografía</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td contenteditable="true">Libre</td>
+                <td class="" contenteditable="true"><br></td>
             </tr>
             <tr>
-                <td class="hora">08:30</td>
+                <td class="hora">14:30</td>
                 <td contenteditable="true">Contabilidad</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr>
                 <td class="hora">09:00</td>
@@ -846,8 +951,8 @@
             </tr>
             <tr>
                 <td class="hora">09:30</td>
-                <td contenteditable="true">Redacción y Corresp.</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td contenteditable="true">Matemática Com.</td>
+                <td class="hl-karen conflict-cell" contenteditable="true">Profa. Karen Supe</td>
             </tr>
             <tr class="break">
                 <td class="hora">10:00</td>
@@ -856,22 +961,22 @@
             <tr>
                 <td class="hora">10:30</td>
                 <td contenteditable="true">Inglés Comercial</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">11:00</td>
                 <td contenteditable="true">Computación</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
-                <td class="hora">11:30</td>
+                <td class="hora">12:00</td>
                 <td contenteditable="true">Ortografía</td>
                 <td class="hl-adela" contenteditable="true">Profa. Adela Jiménez</td>
             </tr>
             <tr>
-                <td class="hora">12:00</td>
-                <td contenteditable="true">Matemática Com.</td>
-                <td class="hl-karen" contenteditable="true">Profa. Karen Supe</td>
+                <td class="hora">09:30</td>
+                <td contenteditable="true">Redacción y Corresp.</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr class="lunch">
                 <td class="hora">12:30</td>
@@ -880,23 +985,28 @@
             <tr>
                 <td class="hora">13:30</td>
                 <td contenteditable="true">Taller Redacción</td>
-                <td class="hl-claudia" contenteditable="true">Profa. Claudia Catalán</td>
+                <td class="hl-claudia conflict-cell" contenteditable="true">Profa. Claudia Catalán</td>
             </tr>
             <tr>
                 <td class="hora">14:00</td>
                 <td contenteditable="true">Inglés Avanzado</td>
-                <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
+                <td class="hl-yara conflict-cell" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
             <tr>
                 <td class="hora">14:30</td>
                 <td contenteditable="true">Inglés Avanzado II</td>
                 <td class="hl-yara" contenteditable="true">Inga. Yara Guzmán</td>
             </tr>
+            <tr>
+                <td class="hora">15:00</td>
+                <td contenteditable="true">Mecanografía</td>
+                <td contenteditable="true" class="hl-yara">Inga. Yara Guzmán</td>
+            </tr>
         </tbody></table>
     </div>
 
     <!-- PANEL DOCENTES EDITABLE -->
-    <div id="docentes" class="tab-content">
+    <div id="docentes" class="tab-content active">
         <h2>👩‍🏫 Panel de Docentes (Editable)</h2>
         
         <div id="editor-docente" class="docente-editor">
@@ -956,78 +1066,74 @@
         </style>
         
         <div class="doc-grid">
-            <!-- KAREN - EDITABLE -->
+            <!-- KAREN - ACTUALIZADO -->
             <div class="doc-card" id="card-karen" style="border-left: 5px solid rgb(229, 115, 115); display: block;">
                 <h3>Profa. Karen Supe</h3>
                 <ul id="horario-karen">
                     <li><strong>08:00</strong> Matemáticas (4to Perito)</li>
-                    <li><strong>08:30</strong> Contabilidad (4to Perito) / Estadística (Perito Adm)</li>
-                    <li><strong>09:00</strong> Matemáticas I (Bach Comp)</li>
-                    <li><strong>09:30</strong> Matemáticas (Básico) / Matemáticas (Bach Mad)</li>
-                    <li><strong>09:30</strong> Contabilidad (Perito Adm)</li>
+                    <li><strong>08:30</strong> Matemáticas Refuerzo (Perito Adm)</li>
+                    <li><strong>09:00</strong> Contabilidad (Perito Adm) / Estadística (4to Perito)</li>
+                    <li><strong>09:30</strong> Matemáticas I (Bach Comp) / Matemáticas (Básico)</li>
+                    <li><strong>10:30</strong> Matemáticas (Bach Mad)</li>
                     <li><strong>11:00</strong> Física I (Bach Comp)</li>
                     <li><strong>11:30</strong> Contabilidad I (Bach Comp)</li>
                     <li><strong>12:00</strong> Matemática Comercial (Secretariado)</li>
+                    <li><strong>13:30</strong> Contabilidad Avanzada (Perito Adm)</li>
                     <li><strong>14:00</strong> Matemáticas I Lab (Bach Comp)</li>
-                    <li><strong>14:30</strong> Estadística I (Bach Comp) / Repaso Contable (4to Perito) / Contabilidad Avanzada (Perito Adm)</li>
+                    <li><strong>14:30</strong> Estadística I (Bach Comp) / Contabilidad (4to Perito)</li>
+                    <li><strong>15:00</strong> Com. y Lenguaje (Bach Comp)</li>
                 </ul>
             </div>
 
-            <!-- ADELA - EDITABLE -->
+            <!-- ADELA - ACTUALIZADO -->
             <div class="doc-card" id="card-adela" style="border-left: 5px solid rgb(186, 104, 200); display: block;">
                 <h3>Profa. Adela Jiménez</h3>
                 <ul id="horario-adela">
                     <li><strong>08:00</strong> Com. y Lenguaje (Básico)</li>
                     <li><strong>08:30</strong> Ciencias Naturales (Bach Mad)</li>
                     <li><strong>09:00</strong> Psicología (Bach Mad)</li>
-                    <li><strong>09:00</strong> Fundamentos Derecho (4to Perito)</li>
                     <li><strong>10:30</strong> Expresión Artística (Básico)</li>
                     <li><strong>11:00</strong> Emprendimiento (Básico)</li>
-                    <li><strong>12:00</strong> Ortografía (4to Perito)</li>
                     <li><strong>11:30</strong> Ortografía (Secretariado)</li>
-                    <li><strong>13:30</strong> Ciencias Naturales (Básico)</li>
+                    <li><strong>12:00</strong> Ortografía (4to Perito)</li>
                     <li><strong>13:30</strong> Com. y Lenguaje (Bach Mad)</li>
-                    <li><strong>14:00</strong> Técnicas Inv. (Perito Adm)</li>
+                    <li><strong>14:00</strong> Técnicas Inv. (Perito Adm) / Ciencias Naturales (Básico)</li>
                     <li><strong>14:30</strong> Expresión Artística (Bach Mad)</li>
-                    <li><strong>15:00</strong> Com. y Lenguaje (Bach Comp)</li>
+                    <li><strong>15:00</strong> Fundamentos Derecho (4to Perito)</li>
                 </ul>
             </div>
 
-            <!-- CLAUDIA - EDITABLE -->
+            <!-- CLAUDIA - ACTUALIZADO -->
             <div class="doc-card" id="card-claudia" style="border-left: 5px solid rgb(77, 182, 172); display: block;">
                 <h3>Profa. Claudia Catalán</h3>
                 <ul id="horario-claudia">
                     <li><strong>08:00</strong> Filosofía (Bach Mad)</li>
-                    <li><strong>08:30</strong> Ciencias Sociales (Bach Mad)</li>
-                    <li><strong>09:00</strong> Idioma Garífuna (Básico)</li>
+                    <li><strong>08:30</strong> Idioma Garífuna (Básico)</li>
                     <li><strong>09:00</strong> Taquigrafía (Secretariado)</li>
-                    <li><strong>09:30</strong> Redacción y Corresp. (4to Perito) / Redacción y Corresp. (Secretariado)</li>
-                    <li><strong>09:30</strong> Administración I (Perito Adm)</li>
-                    <li><strong>10:30</strong> Sociología (Bach Mad)</li>
+                    <li><strong>09:30</strong> Sociología (Bach Mad) / Redacción y Corresp. (4to Perito) / Administración I (Perito Adm)</li>
                     <li><strong>11:30</strong> Admin. Org. Oficina (4to Perito)</li>
-                    <li><strong>12:00</strong> Estudios Sociales (Bach Comp)</li>
-                    <li><strong>12:00</strong> Intro Economía (Perito Adm)</li>
-                    <li><strong>13:30</strong> Intro Economía (4to Perito) / Taller Redacción (Secretariado)</li>
-                    <li><strong>13:30</strong> Sociología (Perito Adm)</li>
-                    <li><strong>14:00</strong> Taller Admin (Perito Adm)</li>
+                    <li><strong>12:00</strong> Estudios Sociales (Bach Comp) / Seminario (Bach Mad) / Redacción y Corresp. (Secretariado)</li>
+                    <li><strong>13:30</strong> Intro Economía (4to Perito) / Sociología (Perito Adm) / Taller Redacción (Secretariado)</li>
                     <li><strong>14:00</strong> Ciencias Sociales (Básico)</li>
                 </ul>
             </div>
 
-            <!-- YARA - EDITABLE -->
+            <!-- YARA - ACTUALIZADO -->
             <div class="doc-card" id="card-yara" style="border-left: 5px solid rgb(255, 183, 77); display: block;">
                 <h3>Inga. Yara Guzmán</h3>
                 <ul id="horario-yara">
-                    <li><strong>08:00</strong> Téc. Reparación (Bach Comp) / Mecanografía (Secretariado)</li>
+                    <li><strong>08:00</strong> Téc. Reparación (Bach Comp)</li>
                     <li><strong>08:30</strong> Téc. Mantenimiento (Bach Comp)</li>
-                    <li><strong>09:30</strong> Computación I (Bach Comp)</li>
-                    <li><strong>10:30</strong> Inglés Comercial (4to Perito) / Inglés Comercial (Perito Adm) / Inglés Comercial (Secretariado)</li>
+                    <li><strong>09:00</strong> Computación I (Bach Comp)</li>
+                    <li><strong>09:30</strong> TAC (Tecnología) (Básico)</li>
+                    <li><strong>10:30</strong> Inglés I (Bach Comp) / Mercadotecnia I (Perito Adm)</li>
                     <li><strong>11:00</strong> TICs (Bach Mad) / Computación (4to Perito) / Computación (Perito Adm) / Computación (Secretariado)</li>
-                    <li><strong>11:30</strong> TAC (Básico) / Mercadotecnia I (Perito Adm)</li>
-                    <li><strong>12:00</strong> Idioma Inglés (Básico) / Inglés (L3) (Bach Mad)</li>
+                    <li><strong>11:30</strong> Inglés (L3) (Bach Mad)</li>
+                    <li><strong>12:00</strong> Idioma Inglés (Básico)</li>
                     <li><strong>13:30</strong> Programación I (Bach Comp)</li>
                     <li><strong>14:00</strong> Programación (4to Perito) / Inglés Avanzado (Secretariado)</li>
-                    <li><strong>14:30</strong> Inglés Avanzado II (Secretariado)</li>
+                    <li><strong>14:30</strong> Estadística I (Bach Comp) / Inglés Comercial (Perito Adm) / Inglés Avanzado II (Secretariado)</li>
+                    <li><strong>15:00</strong> Mecanografía (Secretariado)</li>
                 </ul>
             </div>
         </div>
@@ -1055,8 +1161,9 @@
     };
 
     let currentUser = null;
-    const STORAGE_KEY = "horario2026_sin_conflictos_reorganizado";
+    const STORAGE_KEY = "horario2026_sin_conflictos_corregido";
     let docenteEditando = null;
+    let conflictosActuales = [];
 
     // ========== FUNCIONES DE LOGIN ==========
     function showLogin() {
@@ -1123,51 +1230,180 @@
         autoHighlight();
     }
 
+    // ========== FUNCIONES MEJORADAS PARA AGREGAR FILAS/COLUMNAS ==========
     function addRow() {
         const table = document.querySelector(".tab-content.active table");
         if (!table) return;
-        const row = table.insertRow(-1);
-        const cells = table.rows[1].cells.length;
-        for (let i = 0; i < cells; i++) {
-            const cell = row.insertCell(i);
-            cell.innerHTML = i === 0 ? "00:00" : "";
-            if (i === 0) {
-                cell.className = "hora";
-            } else {
-                cell.setAttribute("contenteditable", "true");
+        
+        const lastRow = table.rows[table.rows.length - 1];
+        let horaBase = "00:00";
+        
+        if (lastRow && lastRow.cells.length > 0) {
+            const horaCell = lastRow.querySelector(".hora");
+            if (horaCell && horaCell.textContent.includes(":")) {
+                horaBase = horaCell.textContent.trim();
             }
         }
+        
+        const row = table.insertRow(-1);
+        const cells = table.rows[1].cells.length;
+        
+        for (let i = 0; i < cells; i++) {
+            const cell = row.insertCell(i);
+            if (i === 0) {
+                cell.className = "hora";
+                // Calcular nueva hora basada en la última
+                const [hours, minutes] = horaBase.split(":").map(Number);
+                let newHours = hours;
+                let newMinutes = minutes + 30;
+                
+                if (newMinutes >= 60) {
+                    newHours += 1;
+                    newMinutes = 0;
+                }
+                
+                cell.textContent = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+            } else {
+                cell.innerHTML = "";
+                if (i === 1) {
+                    cell.setAttribute("contenteditable", "true");
+                    cell.textContent = "Nueva Materia";
+                } else if (i === 2) {
+                    cell.setAttribute("contenteditable", "true");
+                    cell.textContent = "Docente";
+                }
+            }
+        }
+        
+        autoHighlight();
     }
 
     function addCol() {
         const table = document.querySelector(".tab-content.active table");
         if (!table) return;
-        table.querySelectorAll("tr").forEach((tr, i) => {
-            const cell = i === 0 ? document.createElement("th") : tr.insertCell(-1);
-            cell.innerHTML = i === 0 ? "Nueva Columna" : "";
-            if (i !== 0) cell.setAttribute("contenteditable", "true");
-            if (i === 0) tr.appendChild(cell);
+        
+        const colIndex = prompt("¿Qué posición de columna? (1 = primera, 2 = segunda, etc.):");
+        if (!colIndex || isNaN(colIndex) || colIndex < 1) {
+            alert("Debe ingresar un número válido mayor a 0");
+            return;
+        }
+        
+        const position = parseInt(colIndex);
+        
+        table.querySelectorAll("tr").forEach((tr, rowIndex) => {
+            if (rowIndex === 0) {
+                // Para encabezados
+                const th = document.createElement("th");
+                th.textContent = "Nueva Columna";
+                if (position >= tr.cells.length) {
+                    tr.appendChild(th);
+                } else {
+                    tr.insertBefore(th, tr.cells[position]);
+                }
+            } else {
+                const td = document.createElement("td");
+                
+                if (position === 1) {
+                    // Si es la primera columna de datos, es de hora
+                    td.className = "hora";
+                    
+                    // Calcular hora automáticamente
+                    if (rowIndex === 1) {
+                        td.textContent = "08:00";
+                    } else {
+                        const prevRow = table.rows[rowIndex - 1];
+                        if (prevRow && prevRow.cells[0]) {
+                            const prevHour = prevRow.cells[0].textContent.trim();
+                            if (prevHour.includes(":")) {
+                                const [hours, minutes] = prevHour.split(":").map(Number);
+                                let newHours = hours;
+                                let newMinutes = minutes + 30;
+                                
+                                if (newMinutes >= 60) {
+                                    newHours += 1;
+                                    newMinutes = 0;
+                                }
+                                
+                                td.textContent = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+                            } else {
+                                td.textContent = "00:00";
+                            }
+                        } else {
+                            td.textContent = "00:00";
+                        }
+                    }
+                } else {
+                    td.setAttribute("contenteditable", "true");
+                    td.innerHTML = "";
+                }
+                
+                if (position >= tr.cells.length) {
+                    tr.appendChild(td);
+                } else {
+                    tr.insertBefore(td, tr.cells[position]);
+                }
+            }
         });
+        
+        generarHorasAutomaticas();
+        autoHighlight();
     }
 
     function deleteRow() {
         const table = document.querySelector(".tab-content.active table");
-        if (table && table.rows.length > 1) {
+        if (table && table.rows.length > 2) {
             table.deleteRow(-1);
+        } else {
+            alert("No se puede eliminar más filas");
         }
     }
 
     function deleteCol() {
         const table = document.querySelector(".tab-content.active table");
         if (!table) return;
-        const colIndex = prompt("¿Qué columna eliminar? (número, empezando desde 0):");
-        if (colIndex && !isNaN(colIndex) && colIndex > 0) {
+        
+        const colIndex = prompt("¿Qué columna eliminar? (número, empezando desde 1):");
+        if (colIndex && !isNaN(colIndex) && colIndex > 0 && colIndex <= table.rows[0].cells.length) {
+            const index = parseInt(colIndex) - 1;
+            if (index === 0) {
+                alert("No se puede eliminar la columna de horas");
+                return;
+            }
+            
             table.querySelectorAll("tr").forEach(tr => {
-                if (tr.cells[colIndex]) {
-                    tr.deleteCell(colIndex);
+                if (tr.cells[index]) {
+                    tr.deleteCell(index);
                 }
             });
+        } else {
+            alert("Número de columna inválido");
         }
+    }
+
+    // ========== GENERACIÓN AUTOMÁTICA DE HORAS ==========
+    function generarHorasAutomaticas() {
+        const horaInicial = document.getElementById("hora-inicial").value || "08:00";
+        let [hours, minutes] = horaInicial.split(":").map(Number);
+        
+        document.querySelectorAll(".tab-content.active table tr:not(:first-child)").forEach((tr, index) => {
+            const horaCell = tr.querySelector(".hora");
+            if (horaCell) {
+                // Calcular hora para esta fila
+                const currentHours = hours + Math.floor((minutes + (index * 30)) / 60);
+                const currentMinutes = (minutes + (index * 30)) % 60;
+                
+                horaCell.textContent = `${currentHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
+            }
+        });
+    }
+    
+    function actualizarTodasHoras() {
+        document.querySelectorAll(".tab-content").forEach(tab => {
+            tab.classList.add("active");
+            generarHorasAutomaticas();
+            tab.classList.remove("active");
+        });
+        document.querySelector(".tab-content.active").classList.add("active");
     }
 
     // ========== RESALTADO ==========
@@ -1178,6 +1414,7 @@
             "Claudia": "hl-claudia",
             "Yara": "hl-yara"
         };
+        
         document.querySelectorAll("td").forEach(td => {
             td.classList.remove("hl-karen", "hl-adela", "hl-claudia", "hl-yara");
             Object.keys(mappings).forEach(name => {
@@ -1217,9 +1454,6 @@
         // Cargar horario actual
         cargarHorarioDocente();
         
-        // Mostrar editor
-        document.getElementById("editor-docente").classList.add("active");
-        
         // Hacer editable la lista
         const lista = document.getElementById(`horario-${docenteId}`);
         if (lista) {
@@ -1227,6 +1461,8 @@
                 li.setAttribute("contenteditable", "true");
             });
         }
+        
+        openTab("docentes");
     }
 
     function cargarHorarioDocente() {
@@ -1258,15 +1494,20 @@
     }
 
     function cancelarEdicionDocente() {
-        document.getElementById("editor-docente").classList.remove("active");
         docenteEditando = null;
         document.getElementById("select-docente").value = "";
     }
 
-    // ========== VERIFICACIÓN DE CONFLICTOS MEJORADA ==========
-    function verificarConflictos() {
+    // ========== VERIFICACIÓN Y CORRECCIÓN DE CONFLICTOS MEJORADA ==========
+    function verificarConflictos(showPanel = false) {
         const horarioDocentes = {};
         let conflictos = [];
+        let conflictosGraves = 0;
+        
+        // Limpiar indicadores visuales
+        document.querySelectorAll(".conflict-cell").forEach(cell => {
+            cell.classList.remove("conflict-cell");
+        });
         
         // Recopilar todas las clases por docente y hora
         document.querySelectorAll(".tab-content table tr:not(.break):not(.lunch)").forEach(tr => {
@@ -1276,12 +1517,12 @@
             const grado = tr.closest(".tab-content").id;
             const nombreGrado = tr.closest(".tab-content").querySelector("h2")?.textContent || grado;
             
-            if (hora && docente && materia) {
+            if (hora && docente && materia && materia.trim() !== "") {
                 const key = `${hora}-${docente}`;
                 if (!horarioDocentes[key]) {
                     horarioDocentes[key] = [];
                 }
-                horarioDocentes[key].push({materia, grado, nombreGrado});
+                horarioDocentes[key].push({materia, grado, nombreGrado, tr});
             }
         });
         
@@ -1301,12 +1542,30 @@
                         tipo: "CONFLICTO GRAVE: Básico y Bach. Madurez juntos",
                         resuelto: false
                     });
+                    conflictosGraves++;
+                    
+                    // Marcar visualmente
+                    clases.forEach(clase => {
+                        if (clase.tr.cells[2]) {
+                            clase.tr.cells[2].classList.add("conflict-cell");
+                        }
+                    });
                     return;
                 }
                 
                 // Regla 2: Verificar si todas las materias tienen el mismo nombre
                 const primeraMateria = clases[0].materia;
-                const mismasMaterias = clases.every(c => c.materia.trim() === primeraMateria.trim());
+                // Normalizar nombres de materias para comparación
+                const normalizarMateria = (m) => m.toLowerCase()
+                    .replace(/\(.*\)/g, '')
+                    .replace(/[^a-záéíóúñ\s]/g, '')
+                    .trim();
+                
+                const primeraMateriaNorm = normalizarMateria(primeraMateria);
+                const mismasMaterias = clases.every(c => 
+                    normalizarMateria(c.materia) === primeraMateriaNorm || 
+                    normalizarMateria(c.materia) === ""
+                );
                 
                 if (!mismasMaterias) {
                     // Materias diferentes en mismo horario = conflicto
@@ -1317,6 +1576,13 @@
                         tipo: "CONFLICTO: Materias diferentes mismo horario",
                         resuelto: false
                     });
+                    
+                    // Marcar visualmente
+                    clases.forEach(clase => {
+                        if (clase.tr.cells[2]) {
+                            clase.tr.cells[2].classList.add("conflict-cell");
+                        }
+                    });
                 } else {
                     // Misma materia = permitido (excepto Básico/Madurez ya verificado)
                     console.log(`✅ PERMITIDO: ${key} - Misma materia para diferentes grados`);
@@ -1324,30 +1590,182 @@
             }
         });
         
-        if (conflictos.length === 0) {
-            alert("✅ ¡Excelente! No hay conflictos de horario.\n✅ Horario cumple todas las reglas:\n• Básico y Bach. Madurez nunca juntos\n• Sólo misma materia permitida en horario simultáneo");
+        conflictosActuales = conflictos;
+        
+        // Actualizar panel de conflictos si se solicita
+        if (showPanel && conflictos.length > 0) {
+            mostrarPanelConflictos(conflictos);
+        }
+        
+        // Actualizar indicador de estado
+        const statusIndicator = document.getElementById("status-indicator");
+        if (conflictosGraves > 0) {
+            statusIndicator.className = "status-badge status-bad";
+            statusIndicator.textContent = `${conflictosGraves} CONFLICTOS GRAVES`;
+        } else if (conflictos.length > 0) {
+            statusIndicator.className = "status-badge status-warning";
+            statusIndicator.textContent = `${conflictos.length} CONFLICTOS`;
         } else {
-            let mensaje = `⚠️ Se encontraron ${conflictos.length} conflicto(s):\n\n`;
-            conflictos.forEach((conflicto, index) => {
-                mensaje += `${index + 1}. ${conflicto.tipo}\n`;
-                mensaje += `   Docente: ${conflicto.docente} a las ${conflicto.hora}:\n`;
-                conflicto.clases.forEach(clase => {
-                    mensaje += `   - ${clase.materia} (${clase.nombreGrado})\n`;
-                });
-                mensaje += "\n";
-            });
-            mensaje += "\n📌 REGLAS:\n• Básico y Bach. Madurez NO pueden compartir clase\n• Sólo misma materia permitida en horario simultáneo";
-            alert(mensaje);
+            statusIndicator.className = "status-badge status-good";
+            statusIndicator.textContent = "SIN CONFLICTOS";
         }
         
         return conflictos.length;
+    }
+    
+    function mostrarPanelConflictos(conflictos) {
+        const panel = document.getElementById("conflict-panel");
+        const lista = document.getElementById("conflict-list");
+        
+        lista.innerHTML = "";
+        
+        conflictos.forEach((conflicto, index) => {
+            const item = document.createElement("div");
+            item.className = conflicto.resuelto ? "conflict-item resolved" : "conflict-item";
+            
+            let contenido = `<strong>${index + 1}. ${conflicto.tipo}</strong><br>`;
+            contenido += `<small>Docente: ${conflicto.docente} a las ${conflicto.hora}:</small><br>`;
+            
+            conflicto.clases.forEach(clase => {
+                contenido += `<small>• ${clase.materia} (${clase.nombreGrado})</small><br>`;
+            });
+            
+            item.innerHTML = contenido;
+            lista.appendChild(item);
+        });
+        
+        panel.style.display = "block";
+    }
+    
+    function ocultarConflictos() {
+        document.getElementById("conflict-panel").style.display = "none";
+    }
+
+    // ========== CORRECCIÓN AUTOMÁTICA DE CONFLICTOS ==========
+    function corregirConflictosCriticos() {
+        // Corregir conflictos de Básico + Bach. Madurez
+        let cambiosRealizados = 0;
+        
+        conflictosActuales.forEach(conflicto => {
+            if (conflicto.tipo.includes("Básico y Bach. Madurez")) {
+                // Separar Básico a la mañana y Bach. Madurez a la tarde
+                conflicto.clases.forEach(clase => {
+                    if (clase.grado === 'basico') {
+                        // Mover Básico a horario de mañana (08:00-12:30)
+                        const horaCell = clase.tr.querySelector(".hora");
+                        if (horaCell) {
+                            const horaActual = horaCell.textContent.trim();
+                            if (horaActual >= "13:00") {
+                                // Mover a horario de mañana (ej: 09:00)
+                                horaCell.textContent = "09:00";
+                                cambiosRealizados++;
+                            }
+                        }
+                    } else if (clase.grado === 'bach-mad') {
+                        // Mover Bach. Madurez a horario de tarde (13:30-17:00)
+                        const horaCell = clase.tr.querySelector(".hora");
+                        if (horaCell) {
+                            const horaActual = horaCell.textContent.trim();
+                            if (horaActual < "13:00") {
+                                // Mover a horario de tarde (ej: 13:30)
+                                horaCell.textContent = "13:30";
+                                cambiosRealizados++;
+                            }
+                        }
+                    }
+                });
+                
+                conflicto.resuelto = true;
+            }
+        });
+        
+        if (cambiosRealizados > 0) {
+            alert(`✅ Se corrigieron ${cambiosRealizados} conflictos críticos automáticamente`);
+            autoHighlight();
+            verificarConflictos(true);
+            saveChanges();
+        } else {
+            alert("No se encontraron conflictos críticos para corregir automáticamente");
+        }
+    }
+    
+    function corregirAutomaticamente() {
+        if (confirm("¿Estás seguro de aplicar correcciones automáticas? Esto modificará algunos horarios.")) {
+            // 1. Separar Básico y Bach. Madurez
+            corregirConflictosCriticos();
+            
+            // 2. Agrupar materias similares por docente
+            agruparMateriasSimilares();
+            
+            // 3. Verificar y mostrar resultados
+            const conflictosRestantes = verificarConflictos(true);
+            
+            if (conflictosRestantes === 0) {
+                alert("✅ ¡Todos los conflictos han sido resueltos!");
+            } else {
+                alert(`⚠️ Aún quedan ${conflictosRestantes} conflictos por resolver manualmente`);
+            }
+        }
+    }
+    
+    function agruparMateriasSimilares() {
+        // Agrupar materias con nombres similares en mismos horarios
+        const materiasPorDocente = {};
+        
+        document.querySelectorAll(".tab-content table tr:not(.break):not(.lunch)").forEach(tr => {
+            const docente = tr.cells[2]?.textContent?.trim();
+            const materia = tr.cells[1]?.textContent?.trim();
+            
+            if (docente && materia && materia.trim() !== "") {
+                if (!materiasPorDocente[docente]) {
+                    materiasPorDocente[docente] = {};
+                }
+                
+                const materiaNorm = materia.toLowerCase()
+                    .replace(/\(.*\)/g, '')
+                    .replace(/[^a-záéíóúñ\s]/g, '')
+                    .trim();
+                
+                if (!materiasPorDocente[docente][materiaNorm]) {
+                    materiasPorDocente[docente][materiaNorm] = [];
+                }
+                
+                materiasPorDocente[docente][materiaNorm].push(tr);
+            }
+        });
+        
+        // Para cada docente, intentar agrupar materias similares
+        Object.keys(materiasPorDocente).forEach(docente => {
+            const materias = materiasPorDocente[docente];
+            Object.keys(materias).forEach(materiaNorm => {
+                const filas = materias[materiaNorm];
+                if (filas.length > 1) {
+                    // Intentar mover a mismo horario si posible
+                    const primeraHora = filas[0].querySelector(".hora")?.textContent?.trim();
+                    if (primeraHora) {
+                        // Verificar si ese horario está libre para las otras filas
+                        filas.forEach((fila, index) => {
+                            if (index > 0) {
+                                const horaCell = fila.querySelector(".hora");
+                                if (horaCell) {
+                                    horaCell.textContent = primeraHora;
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        autoHighlight();
     }
 
     // ========== GUARDADO Y CARGA ==========
     function saveChanges() {
         const data = {
             tablas: {},
-            docentes: {}
+            docentes: {},
+            timestamp: new Date().toISOString()
         };
         
         // Guardar tablas
@@ -1369,8 +1787,10 @@
         if (numConflictos === 0) {
             alert("✅ Todos los cambios guardados correctamente.\n✅ Horario sin conflictos.");
         } else {
-            alert("⚠️ Cambios guardados, pero hay conflictos de horario.");
+            alert(`⚠️ Cambios guardados, pero hay ${numConflictos} conflictos de horario.`);
         }
+        
+        return numConflictos;
     }
 
     function loadChanges() {
@@ -1418,7 +1838,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "Horario_2026_Sin_Conflictos_Reorganizado.html";
+        a.download = "Horario_2026_Sin_Conflictos_Corregido.html";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1447,16 +1867,19 @@
             if (e.key === "Enter") login();
         });
         
+        // Inicializar como admin
+        currentUser = USERS["yara"];
+        initSession();
+        
         // Verificar conflictos al cargar
         setTimeout(() => {
             const numConflictos = verificarConflictos();
             if (numConflictos === 0) {
                 console.log("✅ Horario sin conflictos - Todas las reglas cumplidas");
+            } else {
+                console.log(`⚠️ Se encontraron ${numConflictos} conflictos que deben resolverse`);
             }
         }, 1000);
     });
 </script>
-
-
-</body>
-</html>
+</body></html>
