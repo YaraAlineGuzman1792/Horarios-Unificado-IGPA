@@ -93,7 +93,7 @@
             text-align: center;
         }
 
-        /* PANEL ADMIN */
+        /* PANEL ADMIN MEJORADO */
         #admin-panel {
             display: none;
             background: #fff8e1;
@@ -101,9 +101,24 @@
             padding: 15px;
             margin-bottom: 25px;
             border-radius: 8px;
-            align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+        }
+
+        .admin-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ffe0b2;
+        }
+
+        .admin-section:last-child {
+            border-bottom: none;
+        }
+
+        .admin-section h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #d35400;
         }
 
         .toolbar-group {
@@ -143,6 +158,12 @@
             background: #e74c3c;
             color: white;
             border-color: #c0392b;
+        }
+
+        .btn-info {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
         }
 
         /* TABS */
@@ -366,23 +387,48 @@
     <h1>Horario Oficial 2026 - Sin Conflictos</h1>
 
     <div id="admin-panel">
-        <div class="toolbar-group">
-            <strong>Edición:</strong>
-            <button class="admin-btn" onclick="addRow()">➕ Fila</button>
-            <button class="admin-btn" onclick="addCol()">➕ Columna</button>
-            <button class="admin-btn" onclick="deleteRow()">➖ Fila</button>
+        <div class="admin-section">
+            <h4>📝 Edición de Tablas</h4>
+            <div class="toolbar-group">
+                <strong>Estructura:</strong>
+                <button class="admin-btn" onclick="addRow()">➕ Fila</button>
+                <button class="admin-btn" onclick="addCol()">➕ Columna</button>
+                <button class="admin-btn" onclick="deleteRow()">➖ Fila</button>
+                <button class="admin-btn" onclick="deleteCol()">➖ Columna</button>
+            </div>
+            <div class="toolbar-group">
+                <strong>Estilos:</strong>
+                <input type="color" id="color-picker" class="admin-btn" style="padding:0; height:30px; width:40px;" onchange="applyColor(this.value)">
+                <button class="admin-btn" onclick="autoHighlight()">✨ Resaltar</button>
+                <button class="admin-btn" onclick="verificarConflictos()">🔍 Verificar Conflictos</button>
+            </div>
         </div>
-        <div class="toolbar-group">
-            <strong>Estilos:</strong>
-            <input type="color" id="color-picker" class="admin-btn" style="padding:0; height:30px; width:40px;" onchange="applyColor(this.value)">
-            <button class="admin-btn" onclick="autoHighlight()">✨ Resaltar Maestras</button>
+        
+        <div class="admin-section">
+            <h4>👩‍🏫 Edición de Horarios Docentes</h4>
+            <div class="toolbar-group">
+                <strong>Seleccionar Docente:</strong>
+                <select id="select-docente" class="admin-btn" onchange="cargarHorarioDocente()">
+                    <option value="">Seleccionar...</option>
+                    <option value="karen">Profa. Karen Supe</option>
+                    <option value="adela">Profa. Adela Jiménez</option>
+                    <option value="claudia">Profa. Claudia Catalán</option>
+                    <option value="yara">Inga. Yara Guzmán</option>
+                </select>
+                <button class="admin-btn btn-info" onclick="habilitarEdicionDocentes()">✏️ Editar Horario</button>
+            </div>
         </div>
-        <div class="toolbar-group">
-            <strong>Archivo:</strong>
-            <button class="admin-btn btn-save" onclick="saveChanges()">💾 Guardar</button>
-            <button class="admin-btn" onclick="printCurrent()">🖨️ Imprimir Actual</button>
-            <button class="admin-btn" onclick="printAll()">🖨️ Imprimir Todo</button>
-            <button class="admin-btn btn-danger" onclick="resetear()">🗑️ Reset</button>
+        
+        <div class="admin-section">
+            <h4>💾 Gestión de Datos</h4>
+            <div class="toolbar-group">
+                <strong>Archivo:</strong>
+                <button class="admin-btn btn-save" onclick="saveChanges()">💾 Guardar Todo</button>
+                <button class="admin-btn" onclick="exportarHTML()">📥 Exportar HTML</button>
+                <button class="admin-btn" onclick="printCurrent()">🖨️ Imprimir Actual</button>
+                <button class="admin-btn" onclick="printAll()">🖨️ Imprimir Todo</button>
+                <button class="admin-btn btn-danger" onclick="resetear()">🗑️ Reset</button>
+            </div>
         </div>
     </div>
 
@@ -396,7 +442,7 @@
         <button class="tab-btn docente-only" id="btn-docentes" onclick="openTab('docentes')">👩‍🏫 Panel Docente</button>
     </div>
 
-    <!-- BASICO - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- BASICO - SIN CONFLICTOS -->
     <div id="basico" class="tab-content active">
         <h2>📚 Ciclo Básico</h2>
         <table class="editable-table">
@@ -466,7 +512,7 @@
         </table>
     </div>
 
-    <!-- BACH MADUREZ - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- BACH MADUREZ - SIN CONFLICTOS -->
     <div id="bach-mad" class="tab-content">
         <h2>📖 Bachillerato por Madurez</h2>
         <table class="editable-table">
@@ -541,7 +587,7 @@
         </table>
     </div>
 
-    <!-- BACH COMP - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- BACH COMP - SIN CONFLICTOS -->
     <div id="bach-comp" class="tab-content">
         <h2>💻 Bachillerato en Computación</h2>
         <table class="editable-table">
@@ -621,7 +667,7 @@
         </table>
     </div>
 
-    <!-- 4TO PERITO - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- 4TO PERITO - SIN CONFLICTOS -->
     <div id="4to-perito" class="tab-content">
         <h2>💼 4to Perito Contador</h2>
         <table class="editable-table">
@@ -696,7 +742,7 @@
         </table>
     </div>
 
-    <!-- PERITO ADMIN - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- PERITO ADMIN - SIN CONFLICTOS -->
     <div id="perito-adm" class="tab-content">
         <h2>🏢 Perito en Administración</h2>
         <table class="editable-table">
@@ -771,7 +817,7 @@
         </table>
     </div>
 
-    <!-- SECRETARIADO - HORARIO REORGANIZADO SIN CONFLICTOS -->
+    <!-- SECRETARIADO - SIN CONFLICTOS -->
     <div id="secre" class="tab-content">
         <h2>🌐 Secretariado Bilingüe</h2>
         <table class="editable-table">
@@ -846,14 +892,26 @@
         </table>
     </div>
 
-    <!-- PANEL DOCENTES -->
+    <!-- PANEL DOCENTES EDITABLE -->
     <div id="docentes" class="tab-content">
-        <h2>👩‍🏫 Panel de Docentes</h2>
+        <h2>👩‍🏫 Panel de Docentes (Editable)</h2>
+        
+        <div id="editor-docente" class="docente-editor">
+            <h3>✏️ Editando horario de: <span id="nombre-docente-editor"></span></h3>
+            <div id="contenido-docente-editor">
+                <!-- Se carga dinámicamente -->
+            </div>
+            <div class="editor-controls">
+                <button class="admin-btn btn-save" onclick="guardarHorarioDocente()">💾 Guardar Cambios</button>
+                <button class="admin-btn" onclick="cancelarEdicionDocente()">❌ Cancelar</button>
+            </div>
+        </div>
+        
         <div class="doc-grid">
-            <!-- KAREN -->
+            <!-- KAREN - EDITABLE -->
             <div class="doc-card" id="card-karen" style="border-left: 5px solid #e57373;">
                 <h3>Profa. Karen Supe</h3>
-                <ul>
+                <ul id="horario-karen">
                     <li><strong>08:00</strong> Matemáticas (4to Perito)</li>
                     <li><strong>08:30</strong> Contabilidad (4to Perito)</li>
                     <li><strong>09:00</strong> Matemáticas I (Bach Comp)</li>
@@ -864,13 +922,14 @@
                     <li><strong>12:00</strong> Matemática Comercial (Secretariado)</li>
                     <li><strong>14:00</strong> Matemáticas I Lab (Bach Comp)</li>
                     <li><strong>14:30</strong> Estadística I (Bach Comp)</li>
+                    <li><strong>15:00</strong> Repaso Contable (4to Perito)</li>
                 </ul>
             </div>
 
-            <!-- ADELA -->
+            <!-- ADELA - EDITABLE -->
             <div class="doc-card" id="card-adela" style="border-left: 5px solid #ba68c8;">
                 <h3>Profa. Adela Jiménez</h3>
-                <ul>
+                <ul id="horario-adela">
                     <li><strong>08:00</strong> Com. y Lenguaje (Básico)</li>
                     <li><strong>09:00</strong> Ciencias Naturales (Bach Mad)</li>
                     <li><strong>09:30</strong> Psicología (Bach Mad)</li>
@@ -884,10 +943,10 @@
                 </ul>
             </div>
 
-            <!-- CLAUDIA -->
+            <!-- CLAUDIA - EDITABLE -->
             <div class="doc-card" id="card-claudia" style="border-left: 5px solid #4db6ac;">
                 <h3>Profa. Claudia Catalán</h3>
-                <ul>
+                <ul id="horario-claudia">
                     <li><strong>08:00</strong> Filosofía (Bach Mad)</li>
                     <li><strong>08:30</strong> Ciencias Sociales (Bach Mad)</li>
                     <li><strong>09:00</strong> Idioma Garífuna (Básico)</li>
@@ -899,10 +958,10 @@
                 </ul>
             </div>
 
-            <!-- YARA -->
+            <!-- YARA - EDITABLE -->
             <div class="doc-card" id="card-yara" style="border-left: 5px solid #ffb74d;">
                 <h3>Inga. Yara Guzmán</h3>
-                <ul>
+                <ul id="horario-yara">
                     <li><strong>08:00</strong> Mecanografía (Secretariado)</li>
                     <li><strong>08:30</strong> Téc. Mantenimiento (Bach Comp)</li>
                     <li><strong>09:30</strong> Computación I (Bach Comp)</li>
@@ -941,6 +1000,7 @@
 
     let currentUser = null;
     const STORAGE_KEY = "horario2026_sin_conflictos";
+    let docenteEditando = null;
 
     // ========== FUNCIONES DE LOGIN ==========
     function showLogin() {
@@ -971,7 +1031,7 @@
         document.querySelectorAll(".docente-only").forEach(e => e.style.display = "block");
         
         if (currentUser.role === "admin") {
-            document.getElementById("admin-panel").style.display = "flex";
+            document.getElementById("admin-panel").style.display = "block";
             document.body.classList.add("is-admin");
             enableEditing(true);
             document.querySelectorAll(".doc-card").forEach(c => c.style.display = "block");
@@ -997,7 +1057,7 @@
         if (btn) btn.classList.add("active");
     }
 
-    // ========== FUNCIONES DE EDICIÓN ==========
+    // ========== FUNCIONES DE EDICIÓN TABLAS ==========
     function enableEditing(enable) {
         document.querySelectorAll("td:not(.hora)").forEach(td => {
             if (!td.parentElement.classList.contains("break") && !td.parentElement.classList.contains("lunch")) {
@@ -1041,6 +1101,19 @@
         }
     }
 
+    function deleteCol() {
+        const table = document.querySelector(".tab-content.active table");
+        if (!table) return;
+        const colIndex = prompt("¿Qué columna eliminar? (número, empezando desde 0):");
+        if (colIndex && !isNaN(colIndex) && colIndex > 0) {
+            table.querySelectorAll("tr").forEach(tr => {
+                if (tr.cells[colIndex]) {
+                    tr.deleteCell(colIndex);
+                }
+            });
+        }
+    }
+
     // ========== RESALTADO ==========
     function autoHighlight() {
         const mappings = {
@@ -1071,24 +1144,146 @@
         }
     }
 
+    // ========== EDICIÓN DE HORARIOS DOCENTES ==========
+    function habilitarEdicionDocentes() {
+        const select = document.getElementById("select-docente");
+        const docenteId = select.value;
+        
+        if (!docenteId) {
+            alert("Por favor selecciona un docente primero");
+            return;
+        }
+        
+        docenteEditando = docenteId;
+        const docenteName = select.options[select.selectedIndex].text;
+        document.getElementById("nombre-docente-editor").textContent = docenteName;
+        
+        // Cargar horario actual
+        cargarHorarioDocente();
+        
+        // Mostrar editor
+        document.getElementById("editor-docente").classList.add("active");
+        
+        // Hacer editable la lista
+        const lista = document.getElementById(`horario-${docenteId}`);
+        if (lista) {
+            lista.querySelectorAll("li").forEach(li => {
+                li.setAttribute("contenteditable", "true");
+            });
+        }
+    }
+
+    function cargarHorarioDocente() {
+        const docenteId = document.getElementById("select-docente").value;
+        if (!docenteId) return;
+        
+        const lista = document.getElementById(`horario-${docenteId}`);
+        if (lista) {
+            document.getElementById("contenido-docente-editor").innerHTML = lista.innerHTML;
+            
+            // Hacer editable el contenido
+            document.getElementById("contenido-docente-editor").querySelectorAll("li").forEach(li => {
+                li.setAttribute("contenteditable", "true");
+            });
+        }
+    }
+
+    function guardarHorarioDocente() {
+        if (!docenteEditando) return;
+        
+        const nuevoContenido = document.getElementById("contenido-docente-editor").innerHTML;
+        document.getElementById(`horario-${docenteEditando}`).innerHTML = nuevoContenido;
+        
+        // Actualizar en localStorage
+        saveChanges();
+        
+        alert("Horario actualizado correctamente");
+        cancelarEdicionDocente();
+    }
+
+    function cancelarEdicionDocente() {
+        document.getElementById("editor-docente").classList.remove("active");
+        docenteEditando = null;
+        document.getElementById("select-docente").value = "";
+    }
+
+    // ========== VERIFICACIÓN DE CONFLICTOS ==========
+    function verificarConflictos() {
+        const horarioDocentes = {};
+        let conflictos = [];
+        
+        // Recopilar todas las clases por docente y hora
+        document.querySelectorAll(".tab-content table tr:not(.break):not(.lunch)").forEach(tr => {
+            const hora = tr.querySelector(".hora")?.textContent?.trim();
+            const docente = tr.cells[2]?.textContent?.trim();
+            const materia = tr.cells[1]?.textContent?.trim();
+            const grado = tr.closest(".tab-content").querySelector("h2")?.textContent;
+            
+            if (hora && docente && materia) {
+                const key = `${hora}-${docente}`;
+                if (!horarioDocentes[key]) {
+                    horarioDocentes[key] = [];
+                }
+                horarioDocentes[key].push({materia, grado});
+            }
+        });
+        
+        // Verificar conflictos
+        Object.keys(horarioDocentes).forEach(key => {
+            if (horarioDocentes[key].length > 1) {
+                conflictos.push({
+                    hora: key.split('-')[0],
+                    docente: key.split('-')[1],
+                    clases: horarioDocentes[key]
+                });
+            }
+        });
+        
+        if (conflictos.length === 0) {
+            alert("✅ ¡Excelente! No hay conflictos de horario.\nNinguna docente tiene clases simultáneas.");
+        } else {
+            let mensaje = `⚠️ Se encontraron ${conflictos.length} conflicto(s):\n\n`;
+            conflictos.forEach((conflicto, index) => {
+                mensaje += `${index + 1}. ${conflicto.docente} a las ${conflicto.hora}:\n`;
+                conflicto.clases.forEach(clase => {
+                    mensaje += `   - ${clase.materia} (${clase.grado})\n`;
+                });
+                mensaje += "\n";
+            });
+            alert(mensaje);
+        }
+        
+        return conflictos.length;
+    }
+
     // ========== GUARDADO Y CARGA ==========
     function saveChanges() {
-        const data = {};
-        document.querySelectorAll("table").forEach((t, i) => {
+        const data = {
+            tablas: {},
+            docentes: {}
+        };
+        
+        // Guardar tablas
+        document.querySelectorAll(".tab-content table").forEach((t, i) => {
             const tabId = t.closest(".tab-content").id;
-            data[tabId] = t.innerHTML;
+            data.tablas[tabId] = t.innerHTML;
         });
         
-        // Guardar también horarios docentes
-        const horariosDocentes = {};
+        // Guardar horarios docentes
         document.querySelectorAll(".doc-card ul").forEach(ul => {
-            const docenteId = ul.closest(".doc-card").id.replace("card-", "");
-            horariosDocentes[docenteId] = ul.innerHTML;
+            const docenteId = ul.id.replace("horario-", "");
+            data.docentes[docenteId] = ul.innerHTML;
         });
-        data.docentes = horariosDocentes;
         
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        alert("✅ Cambios guardados correctamente.");
+        
+        // Verificar si hay conflictos después de guardar
+        const numConflictos = verificarConflictos();
+        if (numConflictos === 0) {
+            alert("✅ Todos los cambios guardados correctamente.\n✅ Horario sin conflictos.");
+        } else {
+            alert("⚠️ Cambios guardados, pero hay conflictos de horario.");
+        }
     }
 
     function loadChanges() {
@@ -1098,19 +1293,19 @@
                 const parsed = JSON.parse(data);
                 
                 // Cargar tablas
-                Object.keys(parsed).forEach(key => {
-                    if (key !== "docentes") {
-                        const table = document.querySelector(`#${key} table`);
-                        if (table && parsed[key]) {
-                            table.innerHTML = parsed[key];
+                if (parsed.tablas) {
+                    Object.keys(parsed.tablas).forEach(tabId => {
+                        const table = document.querySelector(`#${tabId} table`);
+                        if (table && parsed.tablas[tabId]) {
+                            table.innerHTML = parsed.tablas[tabId];
                         }
-                    }
-                });
+                    });
+                }
                 
                 // Cargar horarios docentes
                 if (parsed.docentes) {
                     Object.keys(parsed.docentes).forEach(docenteId => {
-                        const ul = document.querySelector(`#card-${docenteId} ul`);
+                        const ul = document.getElementById(`horario-${docenteId}`);
                         if (ul && parsed.docentes[docenteId]) {
                             ul.innerHTML = parsed.docentes[docenteId];
                         }
@@ -1124,10 +1319,23 @@
     }
 
     function resetear() {
-        if (confirm("¿Estás seguro de borrar todos los cambios?")) {
+        if (confirm("¿Estás seguro de borrar todos los cambios? Esta acción no se puede deshacer.")) {
             localStorage.removeItem(STORAGE_KEY);
             location.reload();
         }
+    }
+
+    function exportarHTML() {
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Horario_2026_Sin_Conflictos.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     // ========== IMPRESIÓN ==========
@@ -1153,45 +1361,8 @@
         });
         
         // Verificar conflictos al cargar
-        verificarConflictos();
+        setTimeout(() => verificarConflictos(), 500);
     });
-
-    // ========== VERIFICACIÓN DE CONFLICTOS ==========
-    function verificarConflictos() {
-        const horarioDocentes = {};
-        let conflictos = 0;
-        
-        // Recopilar todas las clases por docente y hora
-        document.querySelectorAll(".tab-content table tr:not(.break):not(.lunch)").forEach(tr => {
-            const hora = tr.querySelector(".hora")?.textContent;
-            const docente = tr.cells[2]?.textContent?.trim();
-            const materia = tr.cells[1]?.textContent?.trim();
-            const grado = tr.closest(".tab-content").id.replace("-", " ");
-            
-            if (hora && docente && materia) {
-                const key = `${hora}-${docente}`;
-                if (!horarioDocentes[key]) {
-                    horarioDocentes[key] = [];
-                }
-                horarioDocentes[key].push({materia, grado});
-            }
-        });
-        
-        // Contar conflictos
-        Object.keys(horarioDocentes).forEach(key => {
-            if (horarioDocentes[key].length > 1) {
-                conflictos++;
-                console.warn(`⚠️ CONFLICTO: ${key} - ${horarioDocentes[key].length} clases simultáneas`);
-                horarioDocentes[key].forEach(clase => {
-                    console.warn(`   - ${clase.materia} (${clase.grado})`);
-                });
-            }
-        });
-        
-        if (conflictos === 0) {
-            console.log("✅ Horario sin conflictos: Ninguna docente tiene clases simultáneas.");
-        }
-    }
 </script>
 </body>
 </html>
