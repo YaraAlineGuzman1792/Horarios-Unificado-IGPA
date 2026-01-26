@@ -3,265 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horario IGPA - Básico Unificado</title>
+    <title>Horario IGPA 2026</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --bg: #f3f4f6;
-            --border: #d1d5db;
-            /* Colores Docentes */
-            --adela-bg: #e0f2f1; --adela-br: #00897b; --adela-tx: #004d40;
-            --karen-bg: #fff8e1; --karen-br: #ffb300; --karen-tx: #6f4c00;
-            --claudia-bg: #fbe9e7; --claudia-br: #ff7043; --claudia-tx: #bf360c;
-            --yara-bg: #e3f2fd; --yara-br: #42a5f5; --yara-tx: #0d47a1;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --yara-color: #d6eaf8; /* Azul claro */
+            --karen-color: #d5f5e3; /* Verde claro */
+            --claudia-color: #fce8d6; /* Naranja claro */
+            --adela-color: #fadbd8; /* Rojo claro */
         }
 
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #1f2937; }
-        h1 { text-align: center; color: var(--primary); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
 
-        /* Controles de Pestañas */
-        .tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        /* --- Header & Nav --- */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; }
+
+        .auth-controls button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        .auth-controls button:hover { background: rgba(255,255,255,0.3); }
+
+        /* --- Main Layout --- */
+        main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
         .tab-btn {
-            padding: 12px 30px; border: none; background: white; cursor: pointer;
-            font-weight: 700; color: #6b7280; border-radius: 50px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s ease;
+            padding: 10px 20px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            transition: 0.3s;
         }
-        .tab-btn.active { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from {opacity:0; transform: translateY(5px);} to {opacity:1; transform: translateY(0);} }
 
-        /* Tabla Estudiantes */
-        .table-wrap { overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-        th, td { border: 1px solid var(--border); padding: 12px 10px; text-align: center; font-size: 13.5px; }
-        th { background: var(--primary); color: white; position: sticky; top: 0; z-index: 10; font-weight: 600; letter-spacing: 0.5px; }
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* --- Tables --- */
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        /* Highlight classes */
+        .highlight-yara { background-color: var(--yara-color); }
+        .highlight-karen { background-color: var(--karen-color); }
+        .highlight-claudia { background-color: var(--claudia-color); }
+        .highlight-adela { background-color: var(--adela-color); }
+        .break-row { background-color: #ffeaa7; font-weight: bold; }
+
+        /* --- Admin Controls --- */
+        .admin-panel {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+
+        .btn-save { background-color: var(--success); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-primary { background-color: var(--accent); }
         
-        .time-col { background: #374151; color: white; font-weight: 700; width: 100px; white-space: nowrap; }
-        .break-row { background: #9ca3af; color: white; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; font-size: 14px; }
+        input.edit-cell {
+            width: 90%;
+            border: 1px solid #ddd;
+            padding: 5px;
+            font-family: inherit;
+        }
 
-        /* Estilos Celdas */
-        .cell { border-left: 5px solid transparent; height: 100%; display: flex; flex-direction: column; justify-content: center; min-height: 50px; }
-        .sub { font-weight: 700; display: block; margin-bottom: 4px; line-height: 1.2; }
-        .tea { font-size: 11px; font-style: italic; opacity: 0.9; }
-        .badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.5); margin-top: 4px; width: fit-content; align-self: center; font-weight: 600; }
+        /* --- Login Modal --- */
+        #login-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-        .c-adela { background: var(--adela-bg); border-left-color: var(--adela-br); color: var(--adela-tx); }
-        .c-karen { background: var(--karen-bg); border-left-color: var(--karen-br); color: var(--karen-tx); }
-        .c-claudia { background: var(--claudia-bg); border-left-color: var(--claudia-br); color: var(--claudia-tx); }
-        .c-yara { background: var(--yara-bg); border-left-color: var(--yara-br); color: var(--yara-tx); }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
 
-        /* Grid Docentes */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
-        .card-h { padding: 15px; color: white; text-align: center; font-weight: 700; font-size: 1.1em; letter-spacing: 0.5px; }
-        .list { list-style: none; padding: 0; margin: 0; }
-        .li-item { display: flex; padding: 10px 15px; border-bottom: 1px solid #f3f4f6; align-items: center; font-size: 13px; }
-        .li-item:last-child { border-bottom: none; }
-        .li-time { background: #f3f4f6; padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 11px; color: #4b5563; margin-right: 12px; min-width: 45px; text-align: center; }
-        .li-info { display: flex; flex-direction: column; }
-        .li-grp { font-size: 10px; color: #6b7280; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
 
+        /* --- Print Styles --- */
+        @media print {
+            header, .tabs, .admin-panel, .auth-controls { display: none; }
+            body { background: white; }
+            .table-container { box-shadow: none; padding: 0; }
+            th { background-color: #ccc !important; color: black !important; }
+            td, th { border: 1px solid black !important; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Horario Oficial IGPA 2026</h1>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('estudiantes')">Estudiantes</button>
-        <button class="tab-btn" onclick="switchTab('docentes')">Docentes</button>
+<header>
+    <h1>📅 Horario IGPA 2026</h1>
+    <div class="auth-controls">
+        <span id="user-display" style="margin-right: 10px;">Vista: Estudiantes</span>
+        <button id="btn-login" onclick="openLogin()">Soy Docente / Admin</button>
+        <button id="btn-logout" onclick="logout()" style="display:none; background: #c0392b;">Salir</button>
     </div>
+</header>
 
-    <div id="estudiantes" class="tab-content active">
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="time-col">HORA</th>
-                        <th>BÁSICO UNIFICADO</th>
-                        <th>4TO PERITO PC</th>
-                        <th>4TO PERITO PA</th>
-                        <th>SECRETARIADO</th>
-                        <th>4TO BACH COMPU</th>
-                        <th>BACH MADUREZ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">08:00 - 08:35</td>
-                        <td class="c-adela"><span class="sub">C. Naturales</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen" colspan="2"><span class="sub">Contabilidad</span><span class="tea">Karen Supe</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Computación</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-claudia"><span class="sub">C. Sociales</span><span class="tea">Claudia Catalán</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">08:35 - 09:10</td>
-                        <td class="c-adela"><span class="sub">Com. Lenguaje</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen"><span class="sub">Matemáticas</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-claudia"><span class="sub">Sociología</span><span class="tea">Claudia Catalán</span></td>
-                        <td class="c-yara" colspan="3"><span class="sub">Inglés / Idioma L3</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC + BachMad</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">09:10 - 09:45</td>
-                        <td class="c-claudia"><span class="sub">Garífuna</span><span class="tea">Claudia Catalán</span></td>
-                        <td class="c-adela" colspan="2"><span class="sub">Ortografía / Fund. Der</span><span class="tea">Adela Jiménez</span><span class="badge">PC + PA (Apoyo)</span></td>
-                        <td class="c-adela"><span class="sub">Ortografía</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen"><span class="sub">Matemáticas</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-yara"><span class="sub">TICs</span><span class="tea">Yara Guzmán</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">09:45 - 10:20</td>
-                        <td class="c-karen"><span class="sub">Matemáticas</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-claudia" colspan="2"><span class="sub">Intro Economía</span><span class="tea">Claudia Catalán</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Computación / Prog</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-adela"><span class="sub">Lengua y Lit.</span><span class="tea">Adela Jiménez</span></td>
-                    </tr>
-
-                    <tr class="break-row"><td class="time-col">10:20 - 10:50</td><td colspan="6">RECESO (30 MINUTOS)</td></tr>
-
-                    <tr>
-                        <td class="time-col">10:50 - 11:25</td>
-                        <td class="c-adela"><span class="sub">Emprendimiento</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen" colspan="2"><span class="sub">Contabilidad</span><span class="tea">Karen Supe</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Inglés Comercial</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-claudia"><span class="sub">Filosofía</span><span class="tea">Claudia Catalán</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">11:25 - 12:00</td>
-                        <td class="c-yara"><span class="sub">Inglés</span><span class="tea">Yara Guzmán</span></td>
-                        <td class="c-claudia" colspan="2"><span class="sub">Redacción / Admin</span><span class="tea">Claudia Catalán</span><span class="badge">PC + PA (Rotación)</span></td>
-                        <td class="c-claudia"><span class="sub">Taquigrafía</span><span class="tea">Claudia Catalán</span></td>
-                        <td class="c-karen"><span class="sub">Estadística</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-adela"><span class="sub">C. Naturales</span><span class="tea">Adela Jiménez</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">12:00 - 12:35</td>
-                        <td class="c-adela"><span class="sub">Exp. Artística</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen" colspan="2"><span class="sub">Matemáticas</span><span class="tea">Karen Supe</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Mecanografía / Mant.</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-claudia"><span class="sub">C. Sociales</span><span class="tea">Claudia Catalán</span></td>
-                    </tr>
-
-                    <tr class="break-row"><td class="time-col">12:35 - 13:35</td><td colspan="6">ALMUERZO (1 HORA)</td></tr>
-
-                    <tr>
-                        <td class="time-col">13:35 - 14:10</td>
-                        <td class="c-karen"><span class="sub">Matemáticas</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-claudia" colspan="2"><span class="sub">Admin. Oficina</span><span class="tea">Claudia Catalán</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Inglés Com.</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-adela"><span class="sub">Psicología</span><span class="tea">Adela Jiménez</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">14:10 - 14:45</td>
-                        <td class="c-yara"><span class="sub">TAC (Tecnologías)</span><span class="tea">Yara Guzmán</span></td>
-                        <td class="c-adela"><span class="sub">Fund. Derecho</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen" colspan="3"><span class="sub">Matemáticas / Estadíst.</span><span class="tea">Karen Supe</span><span class="badge">PA + Sec + BC</span></td>
-                        <td class="c-claudia"><span class="sub">Seminario</span><span class="tea">Claudia Catalán</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">14:45 - 15:20</td>
-                        <td class="c-karen"><span class="sub">Matemáticas (Rep)</span><span class="tea">Karen Supe</span></td>
-                        <td class="c-claudia" colspan="2"><span class="sub">Intro Economía</span><span class="tea">Claudia Catalán</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Computación I</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-adela"><span class="sub">Expresión</span><span class="tea">Adela Jiménez</span></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">15:20 - 15:55</td>
-                        <td class="c-adela"><span class="sub">Emprendimiento</span><span class="tea">Adela Jiménez</span></td>
-                        <td class="c-karen" colspan="2"><span class="sub">Contabilidad (Taller)</span><span class="tea">Karen Supe</span><span class="badge">PC + PA</span></td>
-                        <td class="c-yara" colspan="2"><span class="sub">Computación (Taller)</span><span class="tea">Yara Guzmán</span><span class="badge">Sec + BC</span></td>
-                        <td class="c-claudia"><span class="sub">Seminario/Inv</span><span class="tea">Claudia Catalán</span></td>
-                    </tr>
-                </tbody>
-            </table>
+<main>
+    <div id="login-modal">
+        <div class="login-box">
+            <h2>Iniciar Sesión</h2>
+            <input type="text" id="username" placeholder="Usuario (ej: yara, karen)">
+            <input type="password" id="password" placeholder="Contraseña (123)">
+            <button class="btn btn-primary" onclick="attemptLogin()">Entrar</button>
+            <button class="btn btn-danger" onclick="closeLogin()" style="margin-top: 10px;">Cancelar</button>
+            <p id="login-error" style="color: red; display: none; font-size: 0.9em; margin-top: 5px;">Credenciales incorrectas</p>
         </div>
     </div>
 
-    <div id="docentes" class="tab-content">
-        <div class="grid">
+    <div class="tabs" id="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('general')">Horario General</button>
+        <button class="tab-btn" id="tab-my-schedule" onclick="switchTab('myschedule')" style="display:none;">Mi Horario</button>
+        <button class="tab-btn" id="tab-editor" onclick="switchTab('editor')" style="display:none;">Editor Admin</button>
+    </div>
+
+    <div id="admin-tools" class="admin-panel" style="display:none;">
+        <strong>Panel de Administración:</strong>
+        <button class="btn btn-success btn-save" onclick="saveChanges()">💾 Guardar Cambios</button>
+        <button class="btn btn-danger" onclick="resetData()">↻ Restaurar Original</button>
+        <button class="btn btn-primary" onclick="printSchedule()">🖨️ Imprimir</button>
+        <select id="other-teacher-select" onchange="viewOtherTeacher(this.value)" style="padding: 8px;">
+            <option value="">-- Ver horario de otra maestra --</option>
+            <option value="Karen">Profa. Karen</option>
+            <option value="Claudia">Profa. Claudia</option>
+            <option value="Adela">Profa. Adela</option>
+        </select>
+    </div>
+
+    <div id="view-general" class="view-section active">
+        <div class="table-container">
+            <h2 style="text-align: center;">Horario General de Clases</h2>
+            <div id="general-table-render"></div>
+        </div>
+    </div>
+
+    <div id="view-myschedule" class="view-section">
+        <div class="table-container">
+            <h2 style="text-align: center;">Mi Horario Individual</h2>
+            <div id="personal-table-render"></div>
+        </div>
+    </div>
+
+    <div id="view-editor" class="view-section">
+        <div class="table-container">
+            <h2 style="text-align: center; color: var(--danger);">Modo Edición</h2>
+            <p style="text-align: center; font-size: 0.9em;">Edita los textos directamente. Haz clic en "Guardar Cambios" arriba para persistir.</p>
+            <div id="editor-table-render"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // --- Initial Data (Based on PDF) ---
+    const initialHeaders = [
+        "HORA", "BÁSICO", "4TO. BACH EN COMPU", "4TO. PERITO / SECRE", "4TO. PERITO ADMON", "BACH. POR MADUREZ"
+    ];
+
+    const initialData = [
+        ["08:00-08:35", "CIENCIAS NATURALES (Adela)", "", "CONTABILIDAD (Karen)", "", "SEMINARIO (Adela)"],
+        ["08:35-09:10", "TICS (Yara)", "", "MATEMÁTICAS (Karen)", "", "PSICOLOGÍA (Adela)"],
+        ["09:10-09:45", "GARÍFUNA (Claudia)", "ESTADÍSTICA (Karen)", "COMPUTACIÓN (Yara)", "TÉCNICAS INV. (Adela)", "TICS (Yara)"],
+        ["09:45-10:20", "EMPRENDIMIENTO (Adela)", "FÍSICA (Karen)", "INGLÉS COMERCIAL (Yara)", "ESTADÍSTICA (Karen)", "CIENCIAS SOCIALES (Claudia)"],
+        ["10:20-10:50", "RECESO", "RECESO", "RECESO", "RECESO", "RECESO"],
+        ["10:50-11:25", "CIENCIAS SOCIALES (Claudia)", "PROGRAMACIÓN (Yara)", "ORTOCALIGRAFÍA (Adela)", "MERCADOTECNIA (Yara)", "CIENCIAS NATURALES (Adela)"],
+        ["11:25-12:00", "MATEMÁTICAS (Karen)", "CIENCIAS SOCIALES (Claudia)", "INTROD. ECONOMÍA (Claudia)", "INTROD. ECONOMÍA (Claudia)", "MATEMÁTICAS (Karen)"],
+        ["12:00-12:35", "EXPRESIÓN ARTÍSTICA (Adela)", "LÓGICA MATEMÁTICA (Karen)", "TAQUIGRAFÍA (Claudia)", "MATEMÁTICAS (Karen)", "EXPRESIÓN ARTÍSTICA (Adela)"],
+        ["12:35-13:35", "ALMUERZO", "ALMUERZO", "ALMUERZO", "ALMUERZO", "ALMUERZO"],
+        ["13:35-14:10", "INGLÉS (Yara)", "MANTENIMIENTO (Yara)", "PROGRAMACIÓN (Yara)", "ADMON Y ORGA. (Claudia)", "ADMINISTRACIÓN (Claudia)"],
+        ["14:10-14:45", "MATEMÁTICAS (Karen)", "MATEMÁTICAS (Karen)", "ORTOCALIGRAFÍA (Adela)", "FUND. DERECHO (Adela)", "FILOSOFÍA (Claudia)"],
+        ["14:45-15:20", "COM. Y LENGUAJE (Adela)", "COM. Y LENGUAJE (Adela)", "INGLÉS AVANZADO (Yara)", "ADMINISTRACIÓN (Claudia)", "LENGUA Y LIT (Adela)"],
+        ["15:20-15:55", "", "INGLÉS (Yara)", "CONTABILIDAD (Karen)", "SOCIOLOGÍA (Claudia)", "INGLÉS (Yara)"]
+    ];
+
+    // --- State Management ---
+    let scheduleData = JSON.parse(localStorage.getItem('igpa_schedule')) || JSON.parse(JSON.stringify(initialData));
+    let currentUser = null; // null, 'yara', 'karen', 'claudia', 'adela'
+
+    const users = {
+        'yara': { name: 'Inga. Yara Guzmán', role: 'admin', keywords: ['Yara'] },
+        'karen': { name: 'Profa. Karen Supe', role: 'teacher', keywords: ['Karen'] },
+        'claudia': { name: 'Profa. Claudia Catalán', role: 'teacher', keywords: ['Claudia'] },
+        'adela': { name: 'Profa. Adela Jimenez', role: 'teacher', keywords: ['Adela'] }
+    };
+
+    // --- Rendering Logic ---
+
+    function getCellClass(content) {
+        if (!content) return '';
+        content = content.toUpperCase();
+        if (content.includes('RECESO') || content.includes('ALMUERZO')) return 'break-row';
+        if (content.includes('YARA')) return 'highlight-yara';
+        if (content.includes('KAREN')) return 'highlight-karen';
+        if (content.includes('CLAUDIA')) return 'highlight-claudia';
+        if (content.includes('ADELA')) return 'highlight-adela';
+        return '';
+    }
+
+    function renderTable(containerId, data, isEditable = false, filterKeyword = null) {
+        let html = '<table><thead><tr>';
+        
+        // Headers
+        initialHeaders.forEach(h => html += `<th>${h}</th>`);
+        html += '</tr></thead><tbody>';
+
+        // Body
+        data.forEach((row, rowIndex) => {
+            // Check if row matches filter (if filter exists)
+            // Logic: If filterKeyword is set, we only show rows where the teacher has a class, 
+            // OR we show the time slot but empty out other cells.
+            // Better logic for "My Schedule": Show time slots, but blank out cells that aren't mine.
             
-            <div class="card">
-                <div class="card-h" style="background: #00897b;">Adela Jiménez</div>
-                <ul class="list">
-                    <li class="li-item"><span class="li-time">08:00</span> <div class="li-info"><span>C. Naturales</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">08:35</span> <div class="li-info"><span>Com. Lenguaje</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">09:10</span> <div class="li-info"><span>Ortografía / Fund. Der</span><span class="li-grp">PC + PA + Secretariado</span></div></li>
-                    <li class="li-item"><span class="li-time">09:45</span> <div class="li-info"><span>Lengua y Literatura</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">RECESO</li>
-                    <li class="li-item"><span class="li-time">10:50</span> <div class="li-info"><span>Emprendimiento</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">11:25</span> <div class="li-info"><span>C. Naturales</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item"><span class="li-time">12:00</span> <div class="li-info"><span>Exp. Artística</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">ALMUERZO</li>
-                    <li class="li-item"><span class="li-time">13:35</span> <div class="li-info"><span>Psicología</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item"><span class="li-time">14:10</span> <div class="li-info"><span>Fund. Derecho</span><span class="li-grp">4to Perito Contador</span></div></li>
-                    <li class="li-item"><span class="li-time">14:45</span> <div class="li-info"><span>Expresión</span><span class="li-grp">Bach. Madurez</span></div></li>
-                </ul>
-            </div>
+            html += '<tr>';
+            row.forEach((cell, colIndex) => {
+                let displayContent = cell;
+                let className = getCellClass(cell);
 
-            <div class="card">
-                <div class="card-h" style="background: #ffb300; color: #4e342e;">Karen Supe</div>
-                <ul class="list">
-                    <li class="li-item"><span class="li-time">08:00</span> <div class="li-info"><span>Contabilidad</span><span class="li-grp">PC + PA</span></div></li>
-                    <li class="li-item"><span class="li-time">08:35</span> <div class="li-info"><span>Matemáticas</span><span class="li-grp">4to Perito PC</span></div></li>
-                    <li class="li-item"><span class="li-time">09:10</span> <div class="li-info"><span>Matemáticas</span><span class="li-grp">Bach. Compu</span></div></li>
-                    <li class="li-item"><span class="li-time">09:45</span> <div class="li-info"><span>Matemáticas</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">RECESO</li>
-                    <li class="li-item"><span class="li-time">10:50</span> <div class="li-info"><span>Contabilidad</span><span class="li-grp">PC + PA</span></div></li>
-                    <li class="li-item"><span class="li-time">11:25</span> <div class="li-info"><span>Estadística</span><span class="li-grp">Bach. Compu</span></div></li>
-                    <li class="li-item"><span class="li-time">12:00</span> <div class="li-info"><span>Matemáticas</span><span class="li-grp">PC + PA</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">ALMUERZO</li>
-                    <li class="li-item"><span class="li-time">13:35</span> <div class="li-info"><span>Matemáticas</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">14:10</span> <div class="li-info"><span>Estadística / Mat</span><span class="li-grp">PA + Sec + BC</span></div></li>
-                    <li class="li-item"><span class="li-time">15:20</span> <div class="li-info"><span>Contabilidad (Taller)</span><span class="li-grp">PC + PA</span></div></li>
-                </ul>
-            </div>
+                // Filter Logic
+                if (filterKeyword && colIndex > 0) { // Skip Time column (index 0)
+                    const cellUpper = cell.toUpperCase();
+                    const kwUpper = filterKeyword.toUpperCase();
+                    
+                    // Always show Breaks
+                    if (!cellUpper.includes('RECESO') && !cellUpper.includes('ALMUERZO')) {
+                        if (!cellUpper.includes(kwUpper)) {
+                            displayContent = ""; // Hide content if it's not this teacher's class
+                            className = ""; // Remove color
+                        }
+                    }
+                }
 
-            <div class="card">
-                <div class="card-h" style="background: #ff7043;">Claudia Catalán</div>
-                <ul class="list">
-                    <li class="li-item"><span class="li-time">08:00</span> <div class="li-info"><span>C. Sociales</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item"><span class="li-time">08:35</span> <div class="li-info"><span>Sociología</span><span class="li-grp">4to PA</span></div></li>
-                    <li class="li-item"><span class="li-time">09:10</span> <div class="li-info"><span>Garífuna</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">09:45</span> <div class="li-info"><span>Intro Economía</span><span class="li-grp">PC + PA</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">RECESO</li>
-                    <li class="li-item"><span class="li-time">10:50</span> <div class="li-info"><span>Filosofía</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item"><span class="li-time">11:25</span> <div class="li-info"><span>Taquigrafía / Redacción</span><span class="li-grp">Secretariado + PC</span></div></li>
-                    <li class="li-item"><span class="li-time">12:00</span> <div class="li-info"><span>C. Sociales</span><span class="li-grp">Bach. Madurez</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">ALMUERZO</li>
-                    <li class="li-item"><span class="li-time">13:35</span> <div class="li-info"><span>Admin. Oficina</span><span class="li-grp">PC + PA</span></div></li>
-                    <li class="li-item"><span class="li-time">14:10</span> <div class="li-info"><span>Seminario</span><span class="li-grp">Bach. Madurez</span></div></li>
-                </ul>
-            </div>
+                if (isEditable) {
+                    html += `<td class="${className}"><input type="text" class="edit-cell" 
+                             data-row="${rowIndex}" data-col="${colIndex}" 
+                             value="${cell}" onchange="updateData(this)"></td>`;
+                } else {
+                    html += `<td class="${className}">${displayContent}</td>`;
+                }
+            });
+            html += '</tr>';
+        });
 
-            <div class="card">
-                <div class="card-h" style="background: #42a5f5;">Yara Guzmán</div>
-                <ul class="list">
-                    <li class="li-item"><span class="li-time">08:00</span> <div class="li-info"><span>Computación</span><span class="li-grp">Sec + Bach Compu</span></div></li>
-                    <li class="li-item"><span class="li-time">08:35</span> <div class="li-info"><span>Inglés / L3</span><span class="li-grp">Sec + BC + BachMad</span></div></li>
-                    <li class="li-item"><span class="li-time">09:10</span> <div class="li-info"><span>TICs / TAC</span><span class="li-grp">BachMad (o Básico)</span></div></li>
-                    <li class="li-item"><span class="li-time">09:45</span> <div class="li-info"><span>Computación / Prog</span><span class="li-grp">Sec + Bach Compu</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">RECESO</li>
-                    <li class="li-item"><span class="li-time">10:50</span> <div class="li-info"><span>Inglés Comercial</span><span class="li-grp">Sec + Bach Compu</span></div></li>
-                    <li class="li-item"><span class="li-time">11:25</span> <div class="li-info"><span>Inglés</span><span class="li-grp">Básico Unificado</span></div></li>
-                    <li class="li-item"><span class="li-time">12:00</span> <div class="li-info"><span>Mecanografía</span><span class="li-grp">Sec + Bach Compu</span></div></li>
-                    <li class="li-item" style="justify-content:center; background:#eee; font-weight:bold;">ALMUERZO</li>
-                    <li class="li-item"><span class="li-time">13:35</span> <div class="li-info"><span>Inglés Comercial</span><span class="li-grp">Sec + Bach Compu</span></div></li>
-                    <li class="li-item"><span class="li-time">14:10</span> <div class="li-info"><span>TAC (Tecnologías)</span><span class="li-grp">Básico Unificado</span></div></li>
-                </ul>
-            </div>
+        html += '</tbody></table>';
+        document.getElementById(containerId).innerHTML = html;
+    }
 
-        </div>
-    </div>
+    // --- Data Operations ---
 
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+    function updateData(input) {
+        const r = input.dataset.row;
+        const c = input.dataset.col;
+        scheduleData[r][c] = input.value;
+    }
+
+    function saveChanges() {
+        localStorage.setItem('igpa_schedule', JSON.stringify(scheduleData));
+        alert('Cambios guardados exitosamente.');
+        renderAllViews();
+    }
+
+    function resetData() {
+        if(confirm("¿Estás segura? Esto borrará todos los cambios personalizados.")) {
+            scheduleData = JSON.parse(JSON.stringify(initialData));
+            saveChanges();
         }
-    </script>
+    }
+
+    function renderAllViews() {
+        renderTable('general-table-render', scheduleData, false);
+        if (currentUser && currentUser.role === 'admin') {
+            renderTable('editor-table-render', scheduleData, true);
+        }
+        if (currentUser) {
+            // Render personal table based on current user keywords
+            const kw = users[currentUser.username].keywords[0];
+            renderTable('personal-table-render', scheduleData, false, kw);
+        }
+    }
+
+    // --- Authentication & UI Logic ---
+
+    function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+
+    function attemptLogin() {
+        const u = document.getElementById('username').value.toLowerCase().trim();
+        const p = document.getElementById('password').value;
+
+        if (users[u] && p === '123') {
+            currentUser = users[u];
+            currentUser.username = u; // store key
+            loginSuccess();
+        } else {
+            document.getElementById('login-error').style.display = 'block';
+        }
+    }
+
+    function loginSuccess() {
+        closeLogin();
+        document.getElementById('btn-login').style.display = 'none';
+        document.getElementById('btn-logout').style.display = 'inline-block';
+        document.getElementById('user-display').innerText = `Hola, ${currentUser.name}`;
+        
+        document.getElementById('tab-my-schedule').style.display = 'block';
+        
+        if (currentUser.role === 'admin') {
+            document.getElementById('tab-editor').style.display = 'block';
+            document.getElementById('admin-tools').style.display = 'flex';
+        }
+
+        // Switch to personal view by default
+        switchTab('myschedule');
+        renderAllViews();
+    }
+
+    function logout() {
+        currentUser = null;
+        document.getElementById('btn-login').style.display = 'inline-block';
+        document.getElementById('btn-logout').style.display = 'none';
+        document.getElementById('user-display').innerText = 'Vista: Estudiantes';
+        
+        document.getElementById('tab-my-schedule').style.display = 'none';
+        document.getElementById('tab-editor').style.display = 'none';
+        document.getElementById('admin-tools').style.display = 'none';
+        
+        switchTab('general');
+    }
+
+    function switchTab(tabName) {
+        // Hide all views
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+        // Show selected
+        document.getElementById(`view-${tabName}`).classList.add('active');
+        
+        // Update buttons
+        if(tabName === 'general') document.querySelector('.tabs button:nth-child(1)').classList.add('active');
+        if(tabName === 'myschedule') document.getElementById('tab-my-schedule').classList.add('active');
+        if(tabName === 'editor') document.getElementById('tab-editor').classList.add('active');
+    }
+
+    function viewOtherTeacher(teacherKeyword) {
+        if(!teacherKeyword) return;
+        // Temporarily render the "My Schedule" view with the selected teacher's filter
+        renderTable('personal-table-render', scheduleData, false, teacherKeyword);
+        switchTab('myschedule');
+        document.querySelector('#view-myschedule h2').innerText = `Horario: ${teacherKeyword}`;
+    }
+
+    function printSchedule() {
+        window.print();
+    }
+
+    // --- Init ---
+    renderTable('general-table-render', scheduleData);
+
+</script>
 
 </body>
 </html>
